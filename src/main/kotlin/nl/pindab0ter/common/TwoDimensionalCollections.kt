@@ -18,6 +18,13 @@ fun <T> Iterable<Iterable<T>>.coordinateOfFirst(predicate: (T) -> Boolean): Coor
 }
 
 /**
+ * @return [Coordinate] (x, y) of the first element in the collection that is in the given [collection], or `null` if the
+ * collection does not contain such element.
+ */
+fun <T> Iterable<Iterable<T>>.coordinateOfAny(collection: Iterable<T>): Coordinate? =
+    coordinateOfFirst { it in collection }
+
+/**
  * @return The first element matching the given predicate, or null if no such element was found.
  */
 fun <T> Iterable<Iterable<T>>.find(predicate: (T) -> Boolean): T? = flatten().find(predicate)

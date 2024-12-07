@@ -60,6 +60,9 @@ fun <T, R> Iterable<T>.mapAsync(transform: (T) -> R): List<R> = runBlocking {
  */
 fun <T> Iterable<T>.productOf(selector: (T) -> Int): Int = fold(1) { acc, element -> acc * selector(element) }
 
+fun <T> Iterable<T>.replace(index: Int, transform: (T) -> T): List<T> = mapIndexed { i, e -> if (i == index) transform(e) else e }
+fun <T> Iterable<T>.replace(index: Int, element: T): Iterable<T> = mapIndexed { i, e -> if (i == index) element else e }
+
 /**
  * @return A new iterable with all elements after the first.
  */
