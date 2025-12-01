@@ -30,7 +30,7 @@ fun List<List<Char>>.xmasOccurrences(): Int = this
     }
 
 fun List<List<Char>>.crossMassOccurrences(): Int = (0..this.count() - 3).sumOf { y ->
-    (0..this.first().count<Char>() - 3).count { x ->
+    (0..this.first().count() - 3).count { x ->
         val a = "${this[y][x]}${this[y + 1][x + 1]}${this[y + 2][x + 2]}"
         val b = "${this[y][x + 2]}${this[y + 1][x + 1]}${this[y + 2][x]}"
 

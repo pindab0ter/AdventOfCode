@@ -40,10 +40,7 @@ private fun Terminal.getInput(): Input {
         showChoices = false,
         invalidChoiceMessage = "Please enter a year for which there is an Advent of Code puzzle:\n",
     ) { input ->
-        val year = input.trim().toIntOrNull()
-
-        if (year == null)
-            return@prompt Invalid("Please enter a valid year")
+        val year = input.trim().toIntOrNull() ?: return@prompt Invalid("Please enter a valid year")
 
         Valid(year)
     }!!
@@ -55,10 +52,7 @@ private fun Terminal.getInput(): Input {
         showChoices = false,
         invalidChoiceMessage = "Please enter a day for which there is an Advent of Code puzzle:\n",
     ) { input ->
-        val day = input.trim().toIntOrNull()
-
-        if (day == null)
-            return@prompt Invalid("Please enter a valid day")
+        val day = input.trim().toIntOrNull() ?: return@prompt Invalid("Please enter a valid day")
 
         Valid(day)
     }!!

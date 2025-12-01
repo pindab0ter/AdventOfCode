@@ -29,6 +29,7 @@ enum class Status {
     INCREASING, DECREASING, UNSAFE
 }
 
+@Suppress("ReplaceRangeToWithRangeUntil")
 fun Pair<Level, Level>.status(): Status = when (second) {
     in first + 1..first + 3 -> INCREASING
     in first - 3..first - 1 -> DECREASING

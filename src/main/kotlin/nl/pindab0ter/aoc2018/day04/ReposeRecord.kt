@@ -31,7 +31,7 @@ class ReposeRecord(entries: List<String>) {
         var currentGuard: Int? = null
         var sleepingFrom: Int? = null
         entries.forEach { entry ->
-            val (month, day, minute, guard) = Regex("""^\[\d+-(\d+)-(\d+) \d+:(\d+)\D*?(?:(\d+)|${'$'})""")
+            val (month, day, minute, guard) = Regex("""^\[\d+-(\d+)-(\d+) \d+:(\d+)\D*?(?:(\d+)|$)""")
                 .find(entry).let { it ?: throw IllegalArgumentException("Cannot parse input \"$entry\"") }
                 .destructured.toList()
                 .map(String::toIntOrNull)

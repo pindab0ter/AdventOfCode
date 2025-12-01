@@ -54,8 +54,7 @@ file("src/main/kotlin")
     .walkTopDown()
     .filter<File> { it.isFile && it.extension == "kt" && it.readText().contains("fun main(") }
     .toList<File>().forEach { file ->
-        val matchResult = Regex("""day\d{2}""").find(file.parentFile.name)
-        if (matchResult == null) return@forEach
+        val matchResult = Regex("""day\d{2}""").find(file.parentFile.name) ?: return@forEach
 
         val day = matchResult.value
         val year = file.parentFile.parentFile.name.removePrefix("aoc")

@@ -9,7 +9,7 @@ fun Iterable<Coordinate>.contains(x: Int, y: Int): Boolean = contains(x.toLong()
 
 /**
  * @return [Coordinate] (x, y) of the first element matching the given [predicate], or `null` if the collection does not
- * contain such element.
+ * contain such an element.
  */
 fun <T> Iterable<Iterable<T>>.coordinateOfFirst(predicate: (T) -> Boolean): Coordinate? {
     for ((y, row) in withIndex()) {
@@ -23,7 +23,7 @@ fun <T> Iterable<Iterable<T>>.coordinateOfFirst(predicate: (T) -> Boolean): Coor
 
 /**
  * @return [Coordinate] (x, y) of the first element in the collection that is in the given [collection], or `null` if the
- * collection does not contain such element.
+ * collection does not contain such an element.
  */
 fun <T> Iterable<Iterable<T>>.coordinateOfAny(collection: Iterable<T>): Coordinate? =
     coordinateOfFirst { it in collection }

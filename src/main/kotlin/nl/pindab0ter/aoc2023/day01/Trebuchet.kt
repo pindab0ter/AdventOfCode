@@ -1,5 +1,3 @@
-@file:Suppress("SpellCheckingInspection")
-
 package nl.pindab0ter.aoc2023.day01
 
 import nl.pindab0ter.common.getInput

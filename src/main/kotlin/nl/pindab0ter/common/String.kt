@@ -3,7 +3,7 @@ package nl.pindab0ter.common
 import java.util.*
 
 /**
- * Returns a copy of this string having its first character uppercased, or the original string if it's empty.
+ * Returns a copy of this string having its first character uppercased, or the original string if it’s empty.
  */
 fun String.uppercaseFirst(): String = replaceFirstChar { it.titlecase(Locale.getDefault()) }
 
