@@ -73,9 +73,9 @@ fun main() {
     val paddedDay = day.padStart(2, '0')
 
     val mainFileName = title.camelCase() + ".kt"
-    val mainFile = Paths.get("src/${"main"}/kotlin/nl/pindab0ter/aoc$year/day$paddedDay", mainFileName).toFile()
+    val mainFile = Paths.get("src/main/kotlin/nl/pindab0ter/aoc$year/day$paddedDay", mainFileName).toFile()
     val testFileName = title.camelCase() + "KtTest.kt"
-    val testFile = Paths.get("src/${"test"}/kotlin/nl/pindab0ter/aoc$year/day$paddedDay", testFileName).toFile()
+    val testFile = Paths.get("src/test/kotlin/nl/pindab0ter/aoc$year/day$paddedDay", testFileName).toFile()
 
     if (mainFile.exists() && testFile.exists()) {
         terminal.info("Both files already exist.")
