@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Test
 
 @DisplayName("Math")
 class MathTest {
-
     @Test
     fun `Calculate the Greatest Common Divisor`() = assertAllEquals(
         6L to gcd(18L, 48L),
@@ -25,4 +24,11 @@ class MathTest {
         72L to lcm(24L, 18L, 12L),
     )
 
+    @Test
+    fun `Get the number of digits in a ULong`() = assertAllEquals(
+        1 to 1uL.digits,
+        2 to 10uL.digits,
+        2 to 19uL.digits,
+        20 to ULong.MAX_VALUE.digits,
+    )
 }

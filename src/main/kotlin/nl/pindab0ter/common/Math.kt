@@ -1,6 +1,7 @@
 package nl.pindab0ter.common
 
 import kotlin.math.abs
+import kotlin.math.pow
 
 fun Int.isOdd(): Boolean = this % 2 != 0
 
@@ -19,6 +20,26 @@ fun Int.nthDigitFromRight(position: Int): Int? {
     val base = (0 until position - 1).fold(1) { acc, _ -> acc * 10 }
     return (this / base) % 10
 }
+
+/**
+ * Returns the number of digits in this number.
+ *
+ * For example, `123456789.digits` returns `9`, `1111` returns `4`.
+ */
+val ULong.digits: Int
+    get() {
+        var digits = 0
+        var current = this
+
+        while (current > 0u) {
+            digits++
+            current /= 10u
+        }
+
+        return digits
+    }
+
+fun ULong.pow(x: Int): ULong = toDouble().pow(x).toULong()
 
 /**
  * Greatest common divisor, see [Euclidean algorithm](https://en.wikipedia.org/wiki/Euclidean_algorithm).
