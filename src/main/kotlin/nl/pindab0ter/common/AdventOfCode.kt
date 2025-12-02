@@ -21,22 +21,28 @@ fun getInput(year: Int, day: Int): String {
     if (!inputFile.exists()) runBlocking {
         if (!inputFile.parentFile.exists()) Files.createDirectories(inputFile.parentFile.toPath())
 
-        val sessionCookie = File(".session-cookie").readText().trim()
+        val input = downloadPuzzleInput(year, day)
 
-        val response = "https://adventofcode.com/${year}/day/${day}/input".httpGet(
-            headers = mapOf(
-                // https://www.reddit.com/r/adventofcode/comments/z9dhtd/please_include_your_contact_info_in_the_useragent/
-                "User-Agent" to "https://github.com/pindab0ter/AdventOfCode",
-                "From" to "hansvanluttikhuizen@me.com",
-                "Cookie" to "session=$sessionCookie",
-            )
-        )
-
-        if (response.statusCode == 400) throw Exception("Invalid session cookie. Please provide a valid session cookie in .session-cookie")
-        if (response.statusCode != 200) throw Exception("Unexpected status code: ${response.statusCode}\n${response.source}")
-
-        inputFile.writeBytes(response.source.readByteArray())
+        inputFile.writeBytes(input)
     }
 
     return inputFile.readText().trimEnd()
+}
+
+private suspend fun downloadPuzzleInput(year: Int, day: Int): ByteArray {
+    val sessionCookie = File(".session-cookie").readText().trim()
+
+    val response = "https://adventofcode.com/${year}/day/${day}/input".httpGet(
+        headers = mapOf(
+            // https://www.reddit.com/r/adventofcode/comments/z9dhtd/please_include_your_contact_info_in_the_useragent/
+            "User-Agent" to "https://github.com/pindab0ter/AdventOfCode",
+            "From" to "hansvanluttikhuizen@me.com",
+            "Cookie" to "session=$sessionCookie",
+        )
+    )
+
+    if (response.statusCode == 400) throw Exception("Invalid session cookie. Please provide a valid session cookie in .session-cookie")
+    if (response.statusCode != 200) throw Exception("Unexpected status code: ${response.statusCode}\n${response.source}")
+
+    return response.source.readByteArray()
 }
