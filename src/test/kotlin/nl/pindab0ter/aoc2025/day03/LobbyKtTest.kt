@@ -12,16 +12,16 @@ import kotlin.test.assertEquals
 class LobbyKtTest {
     @ParameterizedTest(name = "{1} → {0}")
     @MethodSource("partOneProvider")
-    fun `Part one`(expected: JoltageRating, bank: Bank) {
-        val actual = bank.getJoltage()
+    fun `Part one`(expected: Joltage, bank: Bank) {
+        val actual = bank.getTwoBatteryJoltage()
 
         assertEquals(expected, actual)
     }
 
-    // @ParameterizedTest(name = "{1} → {0}")
+    @ParameterizedTest(name = "{1} → {0}")
     @MethodSource("partTwoProvider")
-    fun `Part two`(expected: String, input: String) {
-        val actual = TODO()
+    fun `Part two`(expected: Joltage, bank: Bank) {
+        val actual = bank.getTwelveBatteryJoltage()
 
         assertEquals(expected, actual)
     }
@@ -29,15 +29,18 @@ class LobbyKtTest {
     companion object {
         @JvmStatic
         fun partOneProvider(): Stream<Arguments> = Stream.of(
-            arguments(98, listOf(9, 8, 7, 6, 5, 4, 3, 2, 1, 1, 1, 1, 1, 1, 1)),
-            arguments(89, listOf(8, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 9)),
-            arguments(78, listOf(2, 3, 4, 2, 3, 4, 2, 3, 4, 2, 3, 4, 2, 7, 8)),
-            arguments(92, listOf(8, 1, 8, 1, 8, 1, 9, 1, 1, 1, 1, 2, 1, 1, 1)),
+            arguments(98L, listOf(9, 8, 7, 6, 5, 4, 3, 2, 1, 1, 1, 1, 1, 1, 1)),
+            arguments(89L, listOf(8, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 9)),
+            arguments(78L, listOf(2, 3, 4, 2, 3, 4, 2, 3, 4, 2, 3, 4, 2, 7, 8)),
+            arguments(92L, listOf(8, 1, 8, 1, 8, 1, 9, 1, 1, 1, 1, 2, 1, 1, 1)),
         )
 
         @JvmStatic
         fun partTwoProvider(): Stream<Arguments> = Stream.of(
-            arguments("expected", "actual"),
+            arguments(987654321111L, listOf(9, 8, 7, 6, 5, 4, 3, 2, 1, 1, 1, 1, 1, 1, 1)),
+            arguments(811111111119L, listOf(8, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 9)),
+            arguments(434234234278L, listOf(2, 3, 4, 2, 3, 4, 2, 3, 4, 2, 3, 4, 2, 7, 8)),
+            arguments(888911112111L, listOf(8, 1, 8, 1, 8, 1, 9, 1, 1, 1, 1, 2, 1, 1, 1)),
         )
     }
 }
