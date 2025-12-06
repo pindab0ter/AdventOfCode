@@ -1,7 +1,7 @@
 package nl.pindab0ter.aoc2023.day10
 
 import nl.pindab0ter.common.Coordinate
-import nl.pindab0ter.common.get
+import nl.pindab0ter.common.getOrNull
 
 /**
  * Represents a direction in a 2D grid.
@@ -32,7 +32,7 @@ enum class Direction(val dx: Int, val dy: Int) {
             coordinates: Coordinate,
             grid: List<List<Char>>,
         ): Set<Direction> = setOf(NORTH, EAST, SOUTH, WEST).mapNotNull { direction ->
-            val character = grid[coordinates.toThe(direction)]
+            val character = grid.getOrNull(coordinates.toThe(direction))
             Section.from(character)?.directions?.firstOrNull { it == direction.opposite() }
         }.toSet()
     }

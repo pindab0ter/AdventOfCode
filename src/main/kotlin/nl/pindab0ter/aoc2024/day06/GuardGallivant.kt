@@ -133,7 +133,7 @@ data class Lab(
             val guardCoordinate = charGrid.coordinateOfAny(GUARD.recognizedBy)!!
             val guard = Guard(
                 coordinate = guardCoordinate,
-                direction = Direction.from(charGrid[guardCoordinate]!!)!!
+                direction = Direction.from(charGrid[guardCoordinate])!!
             )
 
             return Lab(map, guard)

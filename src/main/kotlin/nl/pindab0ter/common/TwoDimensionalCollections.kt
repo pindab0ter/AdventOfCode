@@ -37,9 +37,11 @@ fun <T> Iterable<Iterable<T>>.find(predicate: (T) -> Boolean): T? = flatten().fi
  * @return The element at the given [coordinate], or null if the coordinates are out of bounds.
  * @see Coordinate
  */
-operator fun <T> List<List<T>>.get(coordinate: Coordinate): T? = this
+fun <T> List<List<T>>.getOrNull(coordinate: Coordinate): T? = this
     .getOrNull(coordinate.y.toInt())
     ?.getOrNull(coordinate.x.toInt())
+
+operator fun <T> List<List<T>>.get(coordinate: Coordinate): T = this[coordinate.y.toInt()][coordinate.x.toInt()]
 
 operator fun <T> MutableList<MutableList<T>>.set(coordinate: Coordinate, value: T) {
     this[coordinate.y.toInt()][coordinate.x.toInt()] = value
@@ -49,13 +51,9 @@ operator fun <T> MutableList<MutableList<T>>.set(coordinate: Coordinate, value: 
  * @return The element at the given [x] and [y] coordinate, or null if the coordinates are out of bounds.
  * @see Coordinate
  */
-operator fun <T> List<List<T>>.get(x: Int, y: Int): T? = getOrNull(y)?.getOrNull(x)
+fun <T> List<List<T>>.getOrNull(x: Int, y: Int): T? = getOrNull(y)?.getOrNull(x)
 
-/**
- * @return The element at the given [x] and [y] coordinate, or null if the coordinates are out of bounds.
- * @see Coordinate
- */
-operator fun <T> List<List<T>>.get(x: Long, y: Long): T? = this[x.toInt(), y.toInt()]
+operator fun <T> List<List<T>>.get(x: Int, y: Int): T = get(y)[x]
 
 /**
  * Return a new two-dimensional array, rotated 45º clockwise.

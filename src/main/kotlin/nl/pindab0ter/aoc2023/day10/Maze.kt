@@ -19,9 +19,9 @@ data class Maze(val sections: List<List<Section?>>, val startCoordinates: Coordi
     }
 
     private fun directionFor(
-        coordinates: Coordinate,
+        coordinate: Coordinate,
         comingFrom: Direction,
-    ) = sections[coordinates]?.directions!!.minus(comingFrom.opposite()).first()
+    ) = sections.getOrNull(coordinate)?.directions!!.minus(comingFrom.opposite()).first()
 
     private fun determineLoopAndFurthestDistance(): Pair<Set<Coordinate>, Int> {
         fun List<Pair<Coordinate, Direction>>.coordinates() = map(Pair<Coordinate, Direction>::first)
