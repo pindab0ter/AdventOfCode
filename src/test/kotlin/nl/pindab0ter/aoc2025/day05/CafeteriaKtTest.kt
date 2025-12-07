@@ -29,11 +29,43 @@ class CafeteriaKtTest {
         assertEquals(3, actual)
     }
 
-    // @Test
+    @Test
     fun `Part two`() {
-        val actual = TODO()
-        val expected = TODO()
+        val (ranges, _) = """
+            3-5
+            10-14
+            16-20
+            12-18
 
-        assertEquals(expected, actual)
+            1
+            5
+            8
+            11
+            17
+            32
+            """
+            .trimIndent()
+            .parse()
+
+        assertEquals(14uL, ranges.countUniqueIds())
+
+        val (rangesWithCurveball, _) = """
+            3-5
+            10-14
+            16-20
+            12-18
+            9-21
+
+            1
+            5
+            8
+            11
+            17
+            32
+            """
+            .trimIndent()
+            .parse()
+
+        assertEquals(16uL, rangesWithCurveball.countUniqueIds())
     }
 }

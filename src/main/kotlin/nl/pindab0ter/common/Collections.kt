@@ -65,7 +65,11 @@ fun <T> Iterable<T>.productOf(selector: (T) -> Int): Int = fold(1) { acc, elemen
 fun <T> Iterable<T>.replace(index: Int, transform: (T) -> T): List<T> =
     mapIndexed { i, e -> if (i == index) transform(e) else e }
 
+fun <T> Iterable<T>.replaceLast(transform: (T) -> T): List<T> = replace(count() - 1, transform)
+
 fun <T> Iterable<T>.replace(index: Int, element: T): Iterable<T> = mapIndexed { i, e -> if (i == index) element else e }
+
+fun <T> Iterable<T>.replaceLast(index: Int, element: T): Iterable<T> = replace(count() - 1, element)
 
 /**
  * @return A new iterable with all elements after the first.
