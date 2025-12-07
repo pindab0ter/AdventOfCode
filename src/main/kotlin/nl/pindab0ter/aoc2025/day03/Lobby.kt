@@ -1,7 +1,7 @@
 package nl.pindab0ter.aoc2025.day03
 
 import nl.pindab0ter.common.getInput
-import nl.pindab0ter.common.pow
+import nl.pindab0ter.common.joinToULong
 import nl.pindab0ter.common.println
 import nl.pindab0ter.common.without
 
@@ -38,10 +38,6 @@ fun Bank.getTwoBatteryJoltage(): Joltage {
     } while (right === null)
 
     return left.toULong() * 10uL + right.toULong()
-}
-
-fun List<Int>.joinToULong(): ULong = foldIndexed(0uL) { index, acc, x ->
-    acc + x.toULong() * (10uL.pow(size - index - 1))
 }
 
 fun Bank.getTwelveBatteryJoltage(): Joltage {

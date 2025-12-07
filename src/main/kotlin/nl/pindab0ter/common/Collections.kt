@@ -85,3 +85,8 @@ fun <T> Iterable<T>.tail(): Iterable<T> = drop(1)
  * @return A new iterable without the element at [index].
  */
 fun <T> Iterable<T>.without(index: Int) = take(index) + drop(index + 1)
+
+fun List<Int>.joinToULong(): ULong = foldIndexed(0uL) { index, acc, x ->
+    acc + x.toULong() * (10uL.pow(size - index - 1))
+}
+
