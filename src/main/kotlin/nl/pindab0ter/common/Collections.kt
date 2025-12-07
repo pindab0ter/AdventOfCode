@@ -72,6 +72,11 @@ fun <T> Iterable<T>.replace(index: Int, element: T): Iterable<T> = mapIndexed { 
 fun <T> Iterable<T>.replaceLast(index: Int, element: T): Iterable<T> = replace(count() - 1, element)
 
 /**
+ * @return A new iterable with all but the last element.
+ */
+fun <T> Iterable<T>.init(): Iterable<T> = take(count() - 1)
+
+/**
  * @return A new iterable with all elements after the first.
  */
 fun <T> Iterable<T>.tail(): Iterable<T> = drop(1)
