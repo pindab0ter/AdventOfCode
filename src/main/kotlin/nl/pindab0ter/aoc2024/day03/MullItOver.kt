@@ -1,7 +1,7 @@
 package nl.pindab0ter.aoc2024.day03
 
 import arrow.core.tail
-import nl.pindab0ter.common.getInput
+import nl.pindab0ter.aoc.getInput
 import kotlin.text.RegexOption.DOT_MATCHES_ALL
 
 fun main() {

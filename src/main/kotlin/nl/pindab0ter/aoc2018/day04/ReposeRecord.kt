@@ -1,7 +1,7 @@
 package nl.pindab0ter.aoc2018.day04
 
+import nl.pindab0ter.aoc.getInput
 import nl.pindab0ter.aoc2018.day04.ReposeRecord.Shift.Nap
-import nl.pindab0ter.common.getInput
 
 fun main() = getInput(2018, 4)
     .lines()

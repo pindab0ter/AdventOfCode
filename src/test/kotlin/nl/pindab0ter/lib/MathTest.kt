@@ -1,4 +1,4 @@
-package nl.pindab0ter.common
+package nl.pindab0ter.lib
 
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test

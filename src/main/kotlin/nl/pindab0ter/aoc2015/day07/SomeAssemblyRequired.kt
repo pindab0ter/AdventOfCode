@@ -4,7 +4,7 @@ import arrow.core.Either
 import arrow.core.identity
 import arrow.core.left
 import arrow.core.right
-import nl.pindab0ter.common.getInput
+import nl.pindab0ter.aoc.getInput
 
 
 data class Instruction(

@@ -1,6 +1,6 @@
 package nl.pindab0ter.aoc2019.day01
 
-import nl.pindab0ter.common.getInput
+import nl.pindab0ter.aoc.getInput
 
 fun fuelRequired(weight: Int): Int = (weight / 3 - 2).coerceAtLeast(0)
 

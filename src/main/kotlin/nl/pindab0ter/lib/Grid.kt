@@ -1,4 +1,4 @@
-package nl.pindab0ter.common
+package nl.pindab0ter.lib
 
 class Grid<T>(val rows: List<List<T>>) : Iterable<T> {
     constructor(vararg columns: List<T>) : this(columns.toList())

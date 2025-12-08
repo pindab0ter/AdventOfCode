@@ -1,6 +1,6 @@
 package nl.pindab0ter.aoc2023.day10
 
-import nl.pindab0ter.common.Coordinate
+import nl.pindab0ter.lib.Coordinate
 
 
 /**

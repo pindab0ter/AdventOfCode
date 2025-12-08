@@ -7,9 +7,13 @@ import com.github.ajalt.mordant.terminal.Terminal
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import nl.pindab0ter.aoc.getInput
 import nl.pindab0ter.aoc2024.day06.Direction.*
 import nl.pindab0ter.aoc2024.day06.Tile.*
-import nl.pindab0ter.common.*
+import nl.pindab0ter.lib.Coordinate
+import nl.pindab0ter.lib.coordinateOfAny
+import nl.pindab0ter.lib.get
+import nl.pindab0ter.lib.set
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.milliseconds
 

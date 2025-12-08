@@ -1,10 +1,10 @@
 package nl.pindab0ter.aoc2023.day12
 
+import nl.pindab0ter.aoc.getInput
 import nl.pindab0ter.aoc2023.day12.Spring.*
-import nl.pindab0ter.common.getInput
-import nl.pindab0ter.common.mapAsync
-import nl.pindab0ter.common.println
-import nl.pindab0ter.common.timing
+import nl.pindab0ter.lib.mapAsync
+import nl.pindab0ter.lib.println
+import nl.pindab0ter.lib.timing
 
 fun main() {
     val input = getInput(2023, 12)

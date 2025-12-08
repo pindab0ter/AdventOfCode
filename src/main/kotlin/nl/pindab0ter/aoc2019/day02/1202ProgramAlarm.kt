@@ -4,7 +4,7 @@ import com.github.ajalt.mordant.terminal.ConversionResult.Invalid
 import com.github.ajalt.mordant.terminal.ConversionResult.Valid
 import com.github.ajalt.mordant.terminal.Terminal
 import com.github.ajalt.mordant.terminal.prompt
-import nl.pindab0ter.common.getInput
+import nl.pindab0ter.aoc.getInput
 
 fun main(args: Array<String>) {
     val inputMemory = getInput(2019, 2).split(",").map(String::toInt)

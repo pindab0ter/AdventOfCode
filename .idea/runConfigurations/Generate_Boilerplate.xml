@@ -1,6 +1,6 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="Generate Boilerplate" type="JetRunConfigurationType">
-    <option name="MAIN_CLASS_NAME" value="nl.pindab0ter.common.GenerateBoilerplateKt" />
+    <option name="MAIN_CLASS_NAME" value="nl.pindab0ter.aoc.GenerateBoilerplateKt" />
     <module name="AdventOfCode.main" />
     <shortenClasspath name="NONE" />
     <method v="2">

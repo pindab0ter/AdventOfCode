@@ -1,4 +1,4 @@
-package nl.pindab0ter.common
+package nl.pindab0ter.lib
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async

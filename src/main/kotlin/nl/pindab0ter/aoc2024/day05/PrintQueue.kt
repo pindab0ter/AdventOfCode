@@ -1,6 +1,6 @@
 package nl.pindab0ter.aoc2024.day05
 
-import nl.pindab0ter.common.getInput
+import nl.pindab0ter.aoc.getInput
 
 typealias PageOrderingRule = Pair<Int, Int>
 typealias Update = List<Int>
@@ -43,7 +43,7 @@ fun Update.conformsTo(rule: PageOrderingRule): Boolean =
 fun List<Update>.sumOfMiddlePages(): Int = sumOf { update -> update[update.count() / 2] }
 
 class PageOrderingRulesComparator(
-    private val rules: List<PageOrderingRule>
+    private val rules: List<PageOrderingRule>,
 ) : Comparator<Int> {
     override fun compare(o1: Int, o2: Int): Int = when {
         rules.any { rule -> rule.first == o1 && rule.second == o2 } -> -1

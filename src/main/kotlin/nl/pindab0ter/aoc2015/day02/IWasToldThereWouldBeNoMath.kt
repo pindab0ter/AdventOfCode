@@ -1,7 +1,7 @@
 package nl.pindab0ter.aoc2015.day02
 
-import nl.pindab0ter.common.getInput
-import nl.pindab0ter.common.println
+import nl.pindab0ter.aoc.getInput
+import nl.pindab0ter.lib.println
 
 fun main() {
     val input = getInput(2015, 2)

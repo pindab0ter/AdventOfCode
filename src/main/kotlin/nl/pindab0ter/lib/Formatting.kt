@@ -1,4 +1,4 @@
-package nl.pindab0ter.common
+package nl.pindab0ter.lib
 
 /**
  * Converts the [Int] to a [String] and pads it to the specified [length] at the beginning with the specified character

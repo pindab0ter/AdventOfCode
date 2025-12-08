@@ -1,7 +1,7 @@
 package nl.pindab0ter.aoc2023.day06
 
-import nl.pindab0ter.common.getInput
-import nl.pindab0ter.common.productOf
+import nl.pindab0ter.aoc.getInput
+import nl.pindab0ter.lib.productOf
 
 fun main() {
     val input = getInput(2023, 6)

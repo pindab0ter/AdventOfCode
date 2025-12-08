@@ -1,7 +1,7 @@
 package nl.pindab0ter.aoc2023.day10
 
 import com.github.ajalt.mordant.rendering.TextColors.*
-import nl.pindab0ter.common.*
+import nl.pindab0ter.lib.*
 
 data class Maze(val sections: List<List<Section?>>, val startCoordinates: Coordinate) {
     private val start: Section = sections[startCoordinates]!!

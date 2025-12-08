@@ -1,8 +1,8 @@
 package nl.pindab0ter.aoc2018.day11
 
-import nl.pindab0ter.common.getInput
-import nl.pindab0ter.common.mapAsync
-import nl.pindab0ter.common.nthDigitFromRight
+import nl.pindab0ter.aoc.getInput
+import nl.pindab0ter.lib.mapAsync
+import nl.pindab0ter.lib.nthDigitFromRight
 
 fun main() {
     val input = getInput(2018, 11).toInt()

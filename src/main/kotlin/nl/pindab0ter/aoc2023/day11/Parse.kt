@@ -1,6 +1,6 @@
 package nl.pindab0ter.aoc2023.day11
 
-import nl.pindab0ter.common.Coordinate
+import nl.pindab0ter.lib.Coordinate
 
 fun parse(input: String): Set<Coordinate> = input.lines().flatMapIndexed { y, line ->
     line.mapIndexedNotNull { x, c ->

@@ -1,10 +1,10 @@
 package nl.pindab0ter.aoc2024.day02
 
 import arrow.core.tail
+import nl.pindab0ter.aoc.getInput
 import nl.pindab0ter.aoc2024.day02.Status.*
-import nl.pindab0ter.common.getInput
-import nl.pindab0ter.common.second
-import nl.pindab0ter.common.without
+import nl.pindab0ter.lib.second
+import nl.pindab0ter.lib.without
 
 fun main() {
     val input = getInput(2024, 2).parse()

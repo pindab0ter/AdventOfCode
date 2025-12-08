@@ -1,6 +1,6 @@
 package %s
 
-import nl.pindab0ter.common.getInput
+import nl.pindab0ter.aoc.getInput
 
 fun main() {
     val input = getInput(%d, %d).parse()

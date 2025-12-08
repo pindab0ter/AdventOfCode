@@ -1,7 +1,7 @@
 package nl.pindab0ter.aoc2023.day11
 
-import nl.pindab0ter.common.Coordinate
-import nl.pindab0ter.common.tail
+import nl.pindab0ter.lib.Coordinate
+import nl.pindab0ter.lib.tail
 import kotlin.math.max
 
 /**

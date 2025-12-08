@@ -1,6 +1,6 @@
 package nl.pindab0ter.aoc2023.day02
 
-import nl.pindab0ter.common.getInput
+import nl.pindab0ter.aoc.getInput
 
 fun main() {
     val games = parse(getInput(2023, 2))

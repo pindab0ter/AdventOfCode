@@ -1,11 +1,11 @@
 package nl.pindab0ter.aoc2023.day14
 
+import nl.pindab0ter.aoc.getInput
 import nl.pindab0ter.aoc2023.day14.Direction.*
 import nl.pindab0ter.aoc2023.day14.RockType.ROUND
 import nl.pindab0ter.aoc2023.day14.RockType.SQUARE
-import nl.pindab0ter.common.getInput
-import nl.pindab0ter.common.println
-import nl.pindab0ter.common.timing
+import nl.pindab0ter.lib.println
+import nl.pindab0ter.lib.timing
 import java.util.*
 
 fun main() {

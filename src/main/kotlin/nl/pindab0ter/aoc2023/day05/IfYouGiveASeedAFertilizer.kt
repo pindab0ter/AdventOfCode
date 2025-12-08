@@ -1,8 +1,8 @@
 package nl.pindab0ter.aoc2023.day05
 
-import nl.pindab0ter.common.getInput
-import nl.pindab0ter.common.tail
-import nl.pindab0ter.common.timing
+import nl.pindab0ter.aoc.getInput
+import nl.pindab0ter.lib.tail
+import nl.pindab0ter.lib.timing
 
 fun main() {
     val almanac = Almanac(getInput(2023, 5))

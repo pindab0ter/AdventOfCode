@@ -1,4 +1,4 @@
-package nl.pindab0ter.common
+package nl.pindab0ter.aoc
 
 import fuel.httpGet
 import kotlinx.coroutines.runBlocking

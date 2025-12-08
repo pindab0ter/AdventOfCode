@@ -1,6 +1,6 @@
 package nl.pindab0ter.aoc2018.day01
 
-import nl.pindab0ter.common.assertAllEquals
+import nl.pindab0ter.lib.assertAllEquals
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 

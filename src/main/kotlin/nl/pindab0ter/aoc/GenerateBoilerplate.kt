@@ -1,4 +1,4 @@
-package nl.pindab0ter.common
+package nl.pindab0ter.aoc
 
 import com.github.ajalt.mordant.terminal.ConversionResult.Invalid
 import com.github.ajalt.mordant.terminal.ConversionResult.Valid
@@ -6,6 +6,8 @@ import com.github.ajalt.mordant.terminal.Terminal
 import com.github.ajalt.mordant.terminal.info
 import com.github.ajalt.mordant.terminal.prompt
 import com.github.ajalt.mordant.terminal.success
+import nl.pindab0ter.lib.camelCase
+import nl.pindab0ter.lib.padStart
 import java.nio.file.Files
 import java.nio.file.Files.createDirectories
 import java.nio.file.Paths

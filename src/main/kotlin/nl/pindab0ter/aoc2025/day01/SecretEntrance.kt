@@ -1,10 +1,10 @@
 package nl.pindab0ter.aoc2025.day01
 
+import nl.pindab0ter.aoc.getInput
 import nl.pindab0ter.aoc2025.day01.Instruction.Direction
 import nl.pindab0ter.aoc2025.day01.Instruction.Direction.LEFT
 import nl.pindab0ter.aoc2025.day01.Instruction.Direction.RIGHT
-import nl.pindab0ter.common.getInput
-import nl.pindab0ter.common.println
+import nl.pindab0ter.lib.println
 
 fun main() {
     val instructions = getInput(2025, 1).parse()

@@ -1,6 +1,6 @@
 package nl.pindab0ter.aoc2015.day08
 
-import nl.pindab0ter.common.getInput
+import nl.pindab0ter.aoc.getInput
 
 private val hexRegex = """(?!<\\)\\x([a-f0-9]{2})""".toRegex()
 
