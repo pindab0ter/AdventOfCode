@@ -22,3 +22,5 @@ fun <T> timing(name: String? = null, block: () -> T): T {
  * Prints the given [messages] separated by `", "`, and a line separator to the standard output stream.
  */
 fun println(vararg messages: Any?) = kotlin.io.println(messages.joinToString(", "))
+
+fun <T> T.println(): T = also(::println)
