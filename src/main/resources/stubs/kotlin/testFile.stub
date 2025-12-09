@@ -7,6 +7,7 @@ import org.junit.jupiter.params.provider.Arguments.arguments
 import org.junit.jupiter.params.provider.MethodSource
 import java.util.stream.Stream
 import kotlin.test.assertEquals
+import kotlin.test.Ignore
 
 @DisplayName("%d Day %02d - %s")
 class %s {
@@ -20,6 +21,7 @@ class %s {
 
     @ParameterizedTest(name = "{1} → {0}")
     @MethodSource("partTwoProvider")
+    @Ignore
     fun `Part two`(expected: String, input: String) {
         val actual = TODO()
 
