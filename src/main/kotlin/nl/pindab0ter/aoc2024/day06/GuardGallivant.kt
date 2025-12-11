@@ -98,7 +98,7 @@ data class Lab(
         while (guardIsInside()) {
             val tileWhereGuardWas = guard.coordinate
 
-            while (map[guard.coordinateInFront()] == OBSTRUCTION) {
+            while (map.getOrNull(guard.coordinateInFront()) == OBSTRUCTION) {
                 guard.direction = guard.direction.ninetyDegreesClockwise()
             }
 
