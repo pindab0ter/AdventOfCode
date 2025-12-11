@@ -1,15 +1,26 @@
 package nl.pindab0ter.aoc2025.day07
 
 import nl.pindab0ter.aoc.getInput
+import nl.pindab0ter.lib.Coordinate
+import nl.pindab0ter.lib.Grid
 import nl.pindab0ter.lib.println
+import nl.pindab0ter.lib.toGrid
 
 
 fun main() {
-    val (count, outputLines) = getInput(2025, 7)
+    val input = getInput(2025, 7)
+
+    val (count, outputLines) = input
         .lines()
         .simulateTachyonBeamSplitting()
 
-    println("The beam is split a total of $count times:\n$outputLines")
+    val possibleTrajectoryCount = input
+        .toGrid()
+        .countPossibleTrajectories()
+
+    println("$outputLines\n")
+    println("The beam is split a total of $count times")
+    println("The tachyon particle would end up on $possibleTrajectoryCount different timelines")
 }
 
 fun List<String>.simulateTachyonBeamSplitting(): TachyonBeamSplittingResult =
@@ -36,6 +47,29 @@ fun List<String>.simulateTachyonBeamSplitting(): TachyonBeamSplittingResult =
             sequenceData.line
         })
     }
+
+fun Grid<Char>.countPossibleTrajectories(): ULong {
+    val terminatingValues = setOf('^', null)
+    val countCache = mutableMapOf<Coordinate, ULong>()
+
+    fun countFrom(position: Coordinate): ULong {
+        countCache[position]?.let { return it }
+
+        var current = position
+
+        while (getOrNull(current) !in terminatingValues) current = current.south()
+
+        return when (getOrNull(current)) {
+            '^' -> (countFrom(current.west()) + countFrom(current.east()))
+                .also { countCache[position] = it }
+
+            else -> 1uL
+                .also { countCache[position] = it }
+        }
+    }
+
+    return countFrom(coordinateOf('S'))
+}
 
 data class SequenceData(val index: Int, val count: Int, val line: String)
 data class TachyonBeamSplittingResult(val count: Int, val visualization: String)

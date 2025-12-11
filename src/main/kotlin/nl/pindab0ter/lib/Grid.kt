@@ -3,9 +3,14 @@ package nl.pindab0ter.lib
 class Grid<T>(val rows: List<List<T>>) : Iterable<T> {
     constructor(vararg columns: List<T>) : this(columns.toList())
 
-    val columns: List<List<T>> = rows[0].indices.map { x -> rows.indices.map { y -> rows[y, x] } }
+    val columns: List<List<T>> = rows[0].indices.map { x -> rows.indices.map { y -> rows[x, y] } }
     val width: Int = this@Grid.rows.size
     val height: Int = columns.size
+
+    init {
+        require(this@Grid.rows.all { it.size == this@Grid.rows.first().size })
+        require(columns.all { it.size == columns.first().size })
+    }
 
     fun row(y: Int): List<T> = this@Grid.rows[y]
     fun column(x: Int): List<T> = columns[x]
@@ -23,16 +28,25 @@ class Grid<T>(val rows: List<List<T>>) : Iterable<T> {
 
     fun neighbours(coordinate: Coordinate): List<T> = neighbours(coordinate.x.toInt(), coordinate.y.toInt())
 
-    init {
-        require(this@Grid.rows.all { it.size == this@Grid.rows.first().size })
-        require(columns.all { it.size == columns.first().size })
-    }
+    fun coordinateOf(element: T): Coordinate = rows
+        .asSequence()
+        .withIndex()
+        .firstNotNullOf { (y, row) ->
+            row
+                .indexOf(element)
+                .takeIf { it >= 0 }
+                ?.let { x -> Coordinate(x, y) }
+        }
+
+    operator fun get(coordinate: Coordinate): T = rows[coordinate.x.toInt(), coordinate.y.toInt()]
+    fun getOrNull(coordinate: Coordinate): T? = rows.getOrNull(coordinate.x.toInt(), coordinate.y.toInt())
 
     override fun toString(): String = this@Grid.rows.joinToString("\n") { row -> row.joinToString(" ") }
     override fun iterator(): Iterator<T> = this@Grid.rows.flatten().iterator()
 }
 
 fun <T> List<List<T>>.toGrid(): Grid<T> = Grid(this)
+fun String.toGrid(): Grid<Char> = lines().map(String::toList).toGrid()
 
 /**
  * Applies the given [transform] function to each cell in the grid and its coordinates in the original grid
