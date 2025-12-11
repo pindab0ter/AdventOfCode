@@ -1,9 +1,12 @@
 import org.gradle.internal.extensions.stdlib.capitalized
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import java.net.URI
 
 plugins {
-    kotlin("jvm") version "2.1.0"
-    id("dev.clojurephant.clojure") version "0.8.0-beta.7"
+    kotlin("jvm") version "2.2.21"
+    id("dev.clojurephant.clojure") version "0.9.1"
+    id("com.github.ben-manes.versions") version "0.53.0"
     idea
     application
 }
@@ -21,22 +24,24 @@ repositories {
 
 dependencies {
     // Kotlin
-    implementation("org.jetbrains.kotlinx", "kotlinx-coroutines-core", "1.9.0")
-    implementation("io.arrow-kt", "arrow-core", "2.0.0-rc.1")
+    implementation("org.jetbrains.kotlinx", "kotlinx-coroutines-core", "1.10.2")
+    implementation("io.arrow-kt", "arrow-core", "2.2.0")
     implementation("com.github.kittinunf.fuel", "fuel", "3.0.0-alpha04")
 
-    implementation("com.github.ajalt.mordant", "mordant", "3.0.1")
-    implementation("com.github.ajalt.mordant", "mordant-coroutines", "3.0.1")
+    implementation("com.github.ajalt.mordant", "mordant", "3.0.2")
+    implementation("com.github.ajalt.mordant", "mordant-coroutines", "3.0.2")
 
-    testImplementation("org.junit.jupiter", "junit-jupiter", "5.11.3")
-    testImplementation("org.junit.jupiter", "junit-jupiter-params", "5.11.3")
+    testImplementation(platform("org.junit:junit-bom:6.0.1"))
+    testImplementation("org.junit.jupiter", "junit-jupiter")
+    testImplementation("org.junit.jupiter", "junit-jupiter-params")
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 
     testImplementation(kotlin("test"))
 
     // Clojure
-    implementation("org.clojure", "clojure", "1.12.0")
+    implementation("org.clojure", "clojure", "1.12.4")
     implementation("org.clojure", "tools.namespace", "1.5.0")
-    implementation("clj-http", "clj-http", "3.12.4")
+    implementation("clj-http", "clj-http", "3.13.1")
 
     testRuntimeOnly("dev.clojurephant", "jovial", "0.4.2")
 }
@@ -68,3 +73,26 @@ file("src/main/kotlin")
             classpath = sourceSets["main"].runtimeClasspath
         }
     }
+
+tasks.named<com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask>("dependencyUpdates") {
+    fun isUnstable(version: String): Boolean {
+        val containsStableKeyword = listOf("RELEASE", "FINAL", "GA").any { version.contains(it, ignoreCase = true) }
+        val regex = "^[0-9,.v-]+(-r)?$".toRegex()
+        return !containsStableKeyword && !regex.matches(version)
+    }
+
+    rejectVersionIf {
+        val candidateIsUnstable = isUnstable(candidate.version)
+        val currentVersionIsStable = !isUnstable(currentVersion)
+
+        candidateIsUnstable && currentVersionIsStable
+    }
+}
+
+tasks.withType<JavaCompile>().configureEach {
+    options.release.set(17)
+}
+
+tasks.withType<KotlinCompile>().configureEach {
+    compilerOptions.jvmTarget = JVM_17
+}
