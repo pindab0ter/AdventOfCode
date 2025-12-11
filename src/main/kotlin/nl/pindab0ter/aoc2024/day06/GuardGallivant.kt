@@ -62,12 +62,7 @@ data class Guard(
     var coordinate: Coordinate,
     var direction: Direction,
 ) {
-    fun coordinateInFront(): Coordinate = when (direction) {
-        NORTH -> Coordinate(coordinate.x, coordinate.y - 1)
-        EAST -> Coordinate(coordinate.x + 1, coordinate.y)
-        SOUTH -> Coordinate(coordinate.x, coordinate.y + 1)
-        WEST -> Coordinate(coordinate.x - 1, coordinate.y)
-    }
+    fun coordinateInFront(): Coordinate = coordinate.translate(direction)
 }
 
 data class Lab(

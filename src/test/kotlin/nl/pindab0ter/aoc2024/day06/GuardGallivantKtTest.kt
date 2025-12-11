@@ -21,7 +21,7 @@ class GuardGallivantKtTest {
             ........#.
             #.........
             ......#...
-        """.trimIndent()
+            """.trimIndent()
         )
 
         lab.gallivant()
