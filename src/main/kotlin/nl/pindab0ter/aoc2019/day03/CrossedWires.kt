@@ -29,8 +29,8 @@ fun List<Set<Coordinate>>.manhattanDistanceToClosestIntersection(): Long? {
     val greenWire = second().toSet()
 
     return redWire.filter { it in greenWire }
-        .minus(Coordinate(0, 0))
-        .minOfOrNull { coordinate -> coordinate.manhattanDistance(0, 0) }
+        .minus(Coordinate(0L, 0L))
+        .minOfOrNull { coordinate -> coordinate.manhattanDistance(0L, 0L) }
 }
 
 fun String.parse(): List<Set<Instruction>> = lines().map { line ->
