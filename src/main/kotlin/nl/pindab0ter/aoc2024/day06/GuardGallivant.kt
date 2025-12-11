@@ -8,12 +8,9 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import nl.pindab0ter.aoc.getInput
-import nl.pindab0ter.aoc2024.day06.Direction.*
 import nl.pindab0ter.aoc2024.day06.Tile.*
-import nl.pindab0ter.lib.Coordinate
-import nl.pindab0ter.lib.coordinateOfAny
-import nl.pindab0ter.lib.get
-import nl.pindab0ter.lib.set
+import nl.pindab0ter.lib.*
+import nl.pindab0ter.lib.Direction.*
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.milliseconds
 
@@ -41,28 +38,17 @@ fun main() = runBlocking {
     terminal.println("Number of tiles the guard has visited: ${lab.visitedTiles()}")
 }
 
-enum class Direction(val representation: Char) {
-    NORTH('^'),
-    EAST('>'),
-    SOUTH('v'),
-    WEST('<');
-
-    fun ninetyDegreesClockwise(): Direction = when (this) {
-        NORTH -> EAST
-        EAST -> SOUTH
-        SOUTH -> WEST
-        WEST -> NORTH
-    }
-
-    companion object {
-        fun from(char: Char): Direction? = entries.find { it.representation == char }
-    }
-}
-
 enum class Tile(val recognizedBy: List<Char>) {
     FREE(listOf('.')),
     OBSTRUCTION(listOf('#')),
-    GUARD(Direction.entries.map { it.representation }),
+    GUARD(Direction.entries.map {
+        when (it) {
+            NORTH -> '^'
+            EAST -> '>'
+            SOUTH -> 'v'
+            WEST -> '<'
+        }
+    }),
     VISITED(listOf());
 
     companion object {
@@ -77,10 +63,10 @@ data class Guard(
     var direction: Direction,
 ) {
     fun coordinateInFront(): Coordinate = when (direction) {
-        NORTH -> Coordinate(coordinate.x.toInt(), coordinate.y.toInt() - 1)
-        EAST -> Coordinate(coordinate.x.toInt() + 1, coordinate.y.toInt())
-        SOUTH -> Coordinate(coordinate.x.toInt(), coordinate.y.toInt() + 1)
-        WEST -> Coordinate(coordinate.x.toInt() - 1, coordinate.y.toInt())
+        NORTH -> Coordinate(coordinate.x, coordinate.y - 1)
+        EAST -> Coordinate(coordinate.x + 1, coordinate.y)
+        SOUTH -> Coordinate(coordinate.x, coordinate.y + 1)
+        WEST -> Coordinate(coordinate.x - 1, coordinate.y)
     }
 }
 
@@ -110,7 +96,6 @@ data class Lab(
         }
     }
 
-
     override fun toString(): String = map.joinToString("\n") { row ->
         row.joinToString("") { tile ->
             when (tile) {
@@ -137,7 +122,13 @@ data class Lab(
             val guardCoordinate = charGrid.coordinateOfAny(GUARD.recognizedBy)!!
             val guard = Guard(
                 coordinate = guardCoordinate,
-                direction = Direction.from(charGrid[guardCoordinate])!!
+                direction = when (val char = charGrid[guardCoordinate]) {
+                    '^' -> NORTH
+                    '>' -> EAST
+                    'v' -> SOUTH
+                    '<' -> WEST
+                    else -> throw IllegalArgumentException("Unknown direction: $char")
+                }
             )
 
             return Lab(map, guard)
