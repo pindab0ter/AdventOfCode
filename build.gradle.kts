@@ -1,12 +1,10 @@
-import org.gradle.internal.extensions.stdlib.capitalized
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
 import java.net.URI
 
 plugins {
-    kotlin("jvm") version "2.2.21"
-    id("dev.clojurephant.clojure") version "0.9.1"
-    id("com.github.ben-manes.versions") version "0.53.0"
+    alias(libs.plugins.kotlin.jvm)
+    alias(libs.plugins.clojurephant)
+    alias(libs.plugins.versions)
     idea
     application
 }
@@ -23,58 +21,51 @@ repositories {
 }
 
 dependencies {
-    // Kotlin
-    implementation("org.jetbrains.kotlinx", "kotlinx-coroutines-core", "1.10.2")
-    implementation("io.arrow-kt", "arrow-core", "2.2.0")
-    implementation("com.github.kittinunf.fuel", "fuel", "3.0.0-alpha04")
+    // Kotlin Standard Libraries
+    implementation(kotlin("stdlib"))
 
-    implementation("com.github.ajalt.mordant", "mordant", "3.0.2")
-    implementation("com.github.ajalt.mordant", "mordant-coroutines", "3.0.2")
+    // Coroutines and Functional Programming
+    implementation(libs.kotlinx.coroutines.core)
+    implementation(libs.arrow.core)
 
-    testImplementation(platform("org.junit:junit-bom:6.0.1"))
-    testImplementation("org.junit.jupiter", "junit-jupiter")
-    testImplementation("org.junit.jupiter", "junit-jupiter-params")
-    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+    // HTTP Client
+    implementation(libs.fuel)
 
+    // Terminal UI
+    implementation(libs.mordant)
+    implementation(libs.mordant.coroutines)
+
+    // Testing
+    testImplementation(platform(libs.junit.bom))
+    testImplementation(libs.junit.jupiter)
+    testImplementation(libs.junit.jupiter.params)
     testImplementation(kotlin("test"))
+    testRuntimeOnly(libs.junit.platform.launcher)
 
     // Clojure
-    implementation("org.clojure", "clojure", "1.12.4")
-    implementation("org.clojure", "tools.namespace", "1.5.0")
-    implementation("clj-http", "clj-http", "3.13.1")
-
-    testRuntimeOnly("dev.clojurephant", "jovial", "0.4.2")
+    implementation(libs.clojure)
+    implementation(libs.clojure.tools.namespace)
+    implementation(libs.clj.http)
+    testRuntimeOnly(libs.jovial)
 }
 
+// Test configuration
 tasks.test {
     useJUnitPlatform()
+
+    testLogging {
+        events("passed", "skipped", "failed")
+    }
 }
 
 application {
     mainClass.set("nl.pindab0ter.ScratchKt")
 }
 
-// Dynamically create run tasks for each Kotlin file with a main function in it
-file("src/main/kotlin")
-    .walkTopDown()
-    .filter<File> { it.isFile && it.extension == "kt" && it.readText().contains("fun main(") }
-    .toList<File>().forEach { file ->
-        val matchResult = Regex("""day\d{2}""").find(file.parentFile.name) ?: return@forEach
+// Dynamically create run tasks for each Advent of Code solution
+generateAdventOfCodeTasks()
 
-        val day = matchResult.value
-        val year = file.parentFile.parentFile.name.removePrefix("aoc")
-        val taskName = "runKotlin${year}${day}"
-        tasks.register<JavaExec>(taskName) {
-            group = "application"
-            description = "Run the ${file.nameWithoutExtension} file"
-            val packageName = file.parentFile.path.replace("/", ".").substringAfter("src.main.kotlin.")
-            val className = file.nameWithoutExtension.capitalized() + "Kt"
-            mainClass.set("$packageName.$className")
-            classpath = sourceSets["main"].runtimeClasspath
-        }
-    }
-
-tasks.named<com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask>("dependencyUpdates") {
+tasks.named<DependencyUpdatesTask>("dependencyUpdates") {
     fun isUnstable(version: String): Boolean {
         val containsStableKeyword = listOf("RELEASE", "FINAL", "GA").any { version.contains(it, ignoreCase = true) }
         val regex = "^[0-9,.v-]+(-r)?$".toRegex()
@@ -89,10 +80,6 @@ tasks.named<com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask>("
     }
 }
 
-tasks.withType<JavaCompile>().configureEach {
-    options.release.set(17)
-}
-
-tasks.withType<KotlinCompile>().configureEach {
-    compilerOptions.jvmTarget = JVM_17
+kotlin {
+    jvmToolchain(23)
 }
