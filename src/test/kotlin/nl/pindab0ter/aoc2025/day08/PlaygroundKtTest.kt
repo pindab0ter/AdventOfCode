@@ -1,7 +1,6 @@
 package nl.pindab0ter.aoc2025.day08
 
 import org.junit.jupiter.api.DisplayName
-import kotlin.test.Ignore
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -38,11 +37,9 @@ class PlaygroundKtTest {
     }
 
     @Test
-    @Ignore
     fun `Part two`() {
-        val actual = TODO()
-        val expected = TODO()
+        val actual = junctionBoxes.part2()
 
-        assertEquals(expected, actual)
+        assertEquals(25272L, actual)
     }
 }

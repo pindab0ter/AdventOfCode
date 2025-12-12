@@ -13,6 +13,10 @@ class DisjointSet<T>(universe: Iterable<T>) {
         }
     }
 
+    fun add(element: T) {
+        parent[element] = element
+    }
+
     fun find(element: T): T {
         if (parent[element] != element) {
             parent[element] = find(parent[element]!!)
