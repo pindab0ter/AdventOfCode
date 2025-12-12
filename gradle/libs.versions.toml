@@ -1,0 +1,40 @@
+[versions]
+kotlin = "2.2.21"
+coroutines = "1.10.2"
+arrow = "2.2.0"
+fuel = "3.0.0-alpha04"
+mordant = "3.0.2"
+junit = "6.0.1"
+clojure = "1.12.4"
+clojure-tools-namespace = "1.5.0"
+clj-http = "3.13.1"
+jovial = "0.4.2"
+clojurephant = "0.9.1"
+versions-plugin = "0.53.0"
+
+[libraries]
+# Kotlin
+kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }
+arrow-core = { module = "io.arrow-kt:arrow-core", version.ref = "arrow" }
+fuel = { module = "com.github.kittinunf.fuel:fuel", version.ref = "fuel" }
+
+# Terminal UI
+mordant = { module = "com.github.ajalt.mordant:mordant", version.ref = "mordant" }
+mordant-coroutines = { module = "com.github.ajalt.mordant:mordant-coroutines", version.ref = "mordant" }
+
+# Testing
+junit-bom = { module = "org.junit:junit-bom", version.ref = "junit" }
+junit-jupiter = { module = "org.junit.jupiter:junit-jupiter" }
+junit-jupiter-params = { module = "org.junit.jupiter:junit-jupiter-params" }
+junit-platform-launcher = { module = "org.junit.platform:junit-platform-launcher" }
+
+# Clojure
+clojure = { module = "org.clojure:clojure", version.ref = "clojure" }
+clojure-tools-namespace = { module = "org.clojure:tools.namespace", version.ref = "clojure-tools-namespace" }
+clj-http = { module = "clj-http:clj-http", version.ref = "clj-http" }
+jovial = { module = "dev.clojurephant:jovial", version.ref = "jovial" }
+
+[plugins]
+kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+clojurephant = { id = "dev.clojurephant.clojure", version.ref = "clojurephant" }
+versions = { id = "com.github.ben-manes.versions", version.ref = "versions-plugin" }
