@@ -40,6 +40,7 @@ val ULong.digits: Int
     }
 
 fun ULong.pow(x: Int): ULong = toDouble().pow(x).toULong()
+fun Long.sqrt(): Double = kotlin.math.sqrt(toDouble())
 
 /**
  * Greatest common divisor, see [Euclidean algorithm](https://en.wikipedia.org/wiki/Euclidean_algorithm).
