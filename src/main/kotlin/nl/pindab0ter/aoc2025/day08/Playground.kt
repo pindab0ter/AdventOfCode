@@ -1,9 +1,11 @@
 package nl.pindab0ter.aoc2025.day08
 
 import nl.pindab0ter.aoc.getInput
+import nl.pindab0ter.lib.DisjointSet
 import nl.pindab0ter.lib.println
 import nl.pindab0ter.lib.productOf
 import nl.pindab0ter.lib.sqrt
+import java.util.*
 
 data class Vertex(val x: Long, val y: Long, val z: Long) : Comparable<Vertex> {
     override fun compareTo(other: Vertex): Int = compareValuesBy(this, other, Vertex::x, Vertex::y, Vertex::z)
@@ -33,29 +35,26 @@ fun List<Vertex>.part1(closestPairLimit: Int): Int = findClosestPairs(closestPai
     .productOf(Set<Vertex>::count)
 
 fun List<Vertex>.findClosestPairs(limit: Int): List<Pair<Vertex, Vertex>> {
-    val comparator = Comparator<Pair<Vertex, Vertex>> { a, b -> a.distance.compareTo(b.distance) }
+    val queue = PriorityQueue(compareByDescending(Pair<Vertex, Vertex>::distance))
 
-    return foldIndexed(emptyList()) { index, acc, vertex ->
-        drop(index + 1).fold(acc) { innerAcc, innerVertex ->
-            innerAcc
-                .plus(minOf(vertex, innerVertex) to maxOf(vertex, innerVertex))
-                .sortedWith(comparator)
-                .take(limit)
+    forEachIndexed { index, vertex ->
+        drop(index + 1).forEach { otherVertex ->
+            val pair = minOf(vertex, otherVertex) to maxOf(vertex, otherVertex)
+
+            if (queue.size < limit) {
+                queue.offer(pair)
+            } else if (pair.distance < queue.peek().distance) {
+                queue.poll()
+                queue.offer(pair)
+            }
         }
     }
+
+    return generateSequence { queue.poll() }.toList().reversed()
 }
 
-fun List<Pair<Vertex, Vertex>>.stringTogether(): List<Set<Vertex>> = fold(listOf()) { circuits, pair ->
-    val circuitsContainingCurrentPair = circuits
-        .filter { circuit -> circuit.contains(pair.first) || circuit.contains(pair.second) }
-        .toSet()
-
-    val combinedCircuit = circuitsContainingCurrentPair
-        .flatten()
-        .plus(pair.toList())
-        .toSet()
-
-    circuits
-        .minus(circuitsContainingCurrentPair)
-        .plusElement(combinedCircuit)
+fun List<Pair<Vertex, Vertex>>.stringTogether(): Collection<Set<Vertex>> {
+    val disjointSet = DisjointSet(flatMap { pair -> pair.toList().toSet() })
+    forEach { (a, b) -> disjointSet.union(a, b) }
+    return disjointSet.components
 }

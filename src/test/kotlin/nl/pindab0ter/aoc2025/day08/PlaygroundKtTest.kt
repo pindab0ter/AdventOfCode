@@ -32,7 +32,7 @@ class PlaygroundKtTest {
 
     @Test
     fun `Part one`() {
-        val actual = junctionBoxes.part1(10)
+        val actual = junctionBoxes.part1(closestPairLimit = 10)
 
         assertEquals(40, actual)
     }
