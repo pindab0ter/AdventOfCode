@@ -30,7 +30,7 @@ class GridTest {
             listOf(Coordinate(0, 2) to 7, Coordinate(1, 2) to 8, Coordinate(2, 2) to 9),
         ).toGrid()
 
-        val actual = grid.mapIndexed { x, y, value -> Coordinate(x, y) to value }
+        val actual = grid.mapIndexed { coordinate, value -> coordinate to value }
 
         assertContentEquals(expected, actual)
     }

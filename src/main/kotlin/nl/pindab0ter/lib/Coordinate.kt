@@ -7,9 +7,7 @@ import kotlin.math.abs
  * Represents a 2D coordinate in a [Cartesian](https://simple.wikipedia.org/wiki/Cartesian_coordinate_system) plane.
  */
 data class Coordinate(val x: Long, val y: Long) {
-    companion object {
-        operator fun invoke(x: Int, y: Int) = Coordinate(x.toLong(), y.toLong())
-    }
+    constructor(x: Int, y: Int): this(x.toLong(), y.toLong())
 
     /**
      * The [Manhattan distance](https://simple.wikipedia.org/wiki/Manhattan_distance) is the shortest distance between two

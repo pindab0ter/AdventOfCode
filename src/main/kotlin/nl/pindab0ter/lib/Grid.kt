@@ -8,7 +8,7 @@ class Grid<T>(val rows: List<List<T>>) : Iterable<T> {
     val height: Int = columns.size
 
     init {
-        require(this@Grid.rows.all { it.size == this@Grid.rows.first().size })
+        require(rows.all { it.size == rows.first().size })
         require(columns.all { it.size == columns.first().size })
     }
 
@@ -55,12 +55,13 @@ fun String.toGrid(): Grid<Char> = lines().map(String::toList).toGrid()
  * and returns the result of the transform applied to the element.
  */
 inline fun <T, R> Grid<T>.mapIndexed(
-    transform: (x: Int, y: Int, value: T) -> R,
+    transform: (coordinate: Coordinate, value: T) -> R,
 ): Grid<R> {
     val destination = MutableList(width) { mutableListOf<R>() }
     for (x in 0 until width) {
         for (y in 0 until height) {
-            destination[y].add(transform(x, y, rows[y][x]))
+            val coordinate = Coordinate(x, y)
+            destination[y].add(transform(coordinate, rows[y][x]))
         }
     }
     return destination.toGrid()
