@@ -8,7 +8,7 @@ fun main() = getInput(2018, 6)
     .lines()
     .map { it.split(", ").map(String::toInt) }
     .map { (x, y) -> Point(x, y) }
-    .let(::Grid)
+    .let(::PointGrid)
     .let { grid ->
         print(
             """
@@ -28,7 +28,7 @@ data class Point(val x: Int, val y: Int) {
     fun distanceTo(x: Int, y: Int) = abs(this.x - x) + abs(this.y - y)
 }
 
-data class Grid(val points: List<Point>) {
+data class PointGrid(val points: List<Point>) {
     private val x: Int = points.minBy { it.x }.x
     private val y: Int = points.minBy { it.y }.y
     private val width: Int = points.maxBy { it.x }.x

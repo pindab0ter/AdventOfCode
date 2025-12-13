@@ -18,13 +18,13 @@ class ChronalCoordinatesKtTest {
 
     @Test
     fun largestArea() {
-        val actual = Grid(input).largestArea()
+        val actual = PointGrid(input).largestArea()
         Assertions.assertEquals(17, actual)
     }
 
     @Test
     fun sizeOfSafestPointWithin() {
-        val actual = Grid(input).sizeOfSafestPointWithin(32)
+        val actual = PointGrid(input).sizeOfSafestPointWithin(32)
         Assertions.assertEquals(16, actual)
     }
 }

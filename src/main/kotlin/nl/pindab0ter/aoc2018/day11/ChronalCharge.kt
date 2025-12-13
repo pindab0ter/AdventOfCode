@@ -6,18 +6,18 @@ import nl.pindab0ter.lib.nthDigitFromRight
 
 fun main() {
     val input = getInput(2018, 11).toInt()
-    val grid = Grid(input)
+    val fuelCellGrid = FuelCellGrid(input)
 
-    val square1 = grid.findMostPowerfulSquare(3)
+    val square1 = fuelCellGrid.findMostPowerfulSquare(3)
     println("The most powerful square is at ${square1.x},${square1.y} with a power level of ${square1.powerLevel}")
 
-    val square2 = grid.findMostPowerfulSquareOfAnySize()
+    val square2 = fuelCellGrid.findMostPowerfulSquareOfAnySize()
     println("The most powerful square of any size is at ${square2.x},${square2.y},${square2.size} with a power level of ${square2.powerLevel}")
 }
 
 data class Square(val x: Int, val y: Int, val size: Int, val powerLevel: Int)
 
-data class Grid(val width: Int, val height: Int, val cells: List<List<Int>>) {
+data class FuelCellGrid(val width: Int, val height: Int, val cells: List<List<Int>>) {
 
     /**
      * Gets the power level of a 3x3 grid starting at [startX] and [startY]
@@ -70,14 +70,14 @@ data class Grid(val width: Int, val height: Int, val cells: List<List<Int>>) {
         .maxBy(Square::powerLevel)
 
     companion object {
-        operator fun invoke(serialNumber: Int, width: Int = 300, height: Int = 300): Grid {
+        operator fun invoke(serialNumber: Int, width: Int = 300, height: Int = 300): FuelCellGrid {
             val cells = List(width) { x ->
                 List(height) { y ->
                     val rackId = x + 10
                     ((((rackId * y) + serialNumber) * rackId).nthDigitFromRight(3) ?: 0) - 5
                 }
             }
-            return Grid(width, height, cells)
+            return FuelCellGrid(width, height, cells)
         }
     }
 }
