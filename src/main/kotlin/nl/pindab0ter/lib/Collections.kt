@@ -90,3 +90,18 @@ fun List<Int>.joinToULong(): ULong = foldIndexed(0uL) { index, acc, x ->
     acc + x.toULong() * (10uL.pow(size - index - 1))
 }
 
+/**
+ * Returns all unique pairs of elements from this set.
+ *
+ * Each element is paired exactly once with every other element. The order within pairs is determined by the iteration
+ * order of the set.
+ *
+ * For example, `setOf(1, 2, 3).combinations()` returns `setOf(1 to 2, 1 to 3, 2 to 3)`.
+ *
+ * @return A set of all unique pairs from this set.
+ */
+fun <T> Set<T>.combinations(): Set<Pair<T, T>> = withIndex()
+    .flatMap { (i, a) ->
+        drop(i + 1).map { b -> a to b }
+    }
+    .toSet()

@@ -1,6 +1,7 @@
 package nl.pindab0ter.aoc2023.day11
 
 import nl.pindab0ter.lib.Coordinate
+import nl.pindab0ter.lib.combinations
 import nl.pindab0ter.lib.tail
 import kotlin.math.max
 
@@ -13,14 +14,7 @@ fun Set<Coordinate>.sumOfDistancesBetweenGalaxies(expansionMultiplier: Long = 1L
 /**
  * @return The distances between all [Coordinate]s in the set.
  */
-fun Set<Coordinate>.distancesBetween() = allCombinations().map { (a, b) -> a.manhattanDistance(to = b) }
-
-/**
- * @return All unique combinations of two [Coordinate]s in the set.
- */
-fun <T> Set<T>.allCombinations(): Set<Pair<T, T>> = withIndex().flatMap { (i, a) ->
-    drop(i + 1).map { b -> a to b }
-}.toSet()
+fun Set<Coordinate>.distancesBetween() = combinations().map { (a, b) -> a.manhattanDistance(to = b) }
 
 /**
  * Expands empty space in the set of [Coordinate]s by increasing the x and y coordinates of the galaxies in the [Set].
