@@ -46,12 +46,12 @@ class Grid<T>(val rows: List<List<T>>) : Iterable<T> {
      *
      * Each element in this list represents one column (vertical slice) of the grid.
      */
-    val columns: List<List<T>> = rows[0].indices.map { x -> rows.indices.map { y -> rows[x, y] } }
+    val columns: List<List<T>> by lazy { rows[0].indices.map { x -> rows.indices.map { y -> rows[x, y] } }}
 
     /**
      * The number of columns (width) in the grid.
      */
-    val width: Int = columns.size
+    val width: Int = rows.first().size
 
     /**
      * The number of rows (height) in the grid.
@@ -60,7 +60,6 @@ class Grid<T>(val rows: List<List<T>>) : Iterable<T> {
 
     init {
         require(rows.all { it.size == rows.first().size })
-        require(columns.all { it.size == columns.first().size })
     }
 
     /**
