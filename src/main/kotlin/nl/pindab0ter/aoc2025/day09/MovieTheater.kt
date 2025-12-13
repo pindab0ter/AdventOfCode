@@ -4,7 +4,7 @@ import clojure.lang.Numbers.abs
 import nl.pindab0ter.aoc.getInput
 import nl.pindab0ter.lib.collections.combinations
 import nl.pindab0ter.lib.println
-import nl.pindab0ter.lib.types.Coordinate
+import nl.pindab0ter.lib.types.Point
 import kotlin.math.max
 
 fun main() {
@@ -14,15 +14,15 @@ fun main() {
     println("The greatest surface you can make with any two points is: $greatestPossibleSurface")
 }
 
-fun List<Coordinate>.findGreatestSurface(): Long = combinations()
+fun List<Point>.findGreatestSurface(): Long = combinations()
     .fold(0L) { acc, pair ->
         max(acc, pair.surface())
     }
 
-fun Pair<Coordinate, Coordinate>.surface(): Long = (abs(first.x - second.x) + 1) * (abs(first.y - second.y) + 1)
+fun Pair<Point, Point>.surface(): Long = (abs(first.x - second.x) + 1) * (abs(first.y - second.y) + 1)
 
-fun String.parse(): List<Coordinate> = lines().map { line -> line
+fun String.parse(): List<Point> = lines().map { line -> line
     .split(",")
     .map(String::toLong)
-    .let { (x, y) -> Coordinate(x, y) }
+    .let { (x, y) -> Point(x, y) }
 }

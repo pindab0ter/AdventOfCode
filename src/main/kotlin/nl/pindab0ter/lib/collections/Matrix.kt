@@ -1,61 +1,28 @@
 package nl.pindab0ter.lib.collections
 
-import nl.pindab0ter.lib.types.Coordinate
+import nl.pindab0ter.lib.types.Point
 import kotlin.math.max
 import kotlin.math.min
 
-/**
- * Returns the [Coordinate] of the first element that is contained in the given [collection], or `null` if no such element was found.
- *
- * The search is performed row by row, from top to bottom and left to right within each row.
- *
- * @param collection The collection of elements to search for.
- * @return The coordinate (x, y) of the first matching element, or `null` if no element from [collection] is found.
- *
- * @see coordinateOfFirst
- */
-fun <T> Iterable<Iterable<T>>.coordinateOfAny(collection: Iterable<T>): Coordinate? =
-    coordinateOfFirst { it in collection }
+/** Flattens and searches the 2D collection. */
+fun <T> Iterable<Iterable<T>>.find(predicate: (T) -> Boolean): T? = flatten().find(predicate)
+operator fun <T> List<List<T>>.get(point: Point): T = this[point.y.toInt()][point.x.toInt()]
+operator fun <T> List<List<T>>.get(x: Int, y: Int): T = get(y)[x]
+fun <T> List<List<T>>.getOrNull(point: Point): T? = this
+    .getOrNull(point.y.toInt())
+    ?.getOrNull(point.x.toInt())
 
-/**
- * Returns the [Coordinate] of the first element matching the given [predicate], or `null` if no such element was found.
- *
- * The search is performed row by row, from top to bottom and left to right within each row.
- *
- * @param predicate The function to test elements for a match.
- * @return The coordinate (x, y) of the first matching element, or `null` if the collection does not contain such an element.
- *
- * @see Iterable.find
- */
-fun <T> Iterable<Iterable<T>>.coordinateOfFirst(predicate: (T) -> Boolean): Coordinate? {
+fun <T> List<List<T>>.getOrNull(x: Int, y: Int): T? = getOrNull(y)?.getOrNull(x)
+
+fun <T> Iterable<Iterable<T>>.pointOfFirst(predicate: (T) -> Boolean): Point? {
     for ((y, row) in withIndex()) {
         for ((x, cell) in row.withIndex()) {
-            if (predicate(cell)) return Coordinate(x.toLong(), y.toLong())
+            if (predicate(cell)) return Point(x.toLong(), y.toLong())
         }
     }
 
     return null
 }
-
-/** Flattens and searches the 2D collection. */
-fun <T> Iterable<Iterable<T>>.find(predicate: (T) -> Boolean): T? = flatten().find(predicate)
-
-operator fun <T> List<List<T>>.get(coordinate: Coordinate): T = this[coordinate.y.toInt()][coordinate.x.toInt()]
-operator fun <T> List<List<T>>.get(x: Int, y: Int): T = get(y)[x]
-fun <T> List<List<T>>.getOrNull(coordinate: Coordinate): T? = this
-    .getOrNull(coordinate.y.toInt())
-    ?.getOrNull(coordinate.x.toInt())
-
-/**
- * Returns the element at the given x and y coordinates, or `null` if the coordinates are out of bounds.
- *
- * @param x The x-coordinate (column index).
- * @param y The y-coordinate (row index).
- * @return The element at the specified coordinates, or `null` if the coordinates are out of bounds.
- *
- * @see getOrNull
- */
-fun <T> List<List<T>>.getOrNull(x: Int, y: Int): T? = getOrNull(y)?.getOrNull(x)
 
 /**
  * Rotates 45 degrees clockwise.
@@ -115,15 +82,15 @@ fun <T> List<List<T>>.rotate45DegreesAntiClockwise(): List<List<T>> {
     return rotatedList
 }
 
-operator fun <T> MutableList<MutableList<T>>.set(coordinate: Coordinate, value: T) {
-    this[coordinate.y.toInt()][coordinate.x.toInt()] = value
+operator fun <T> MutableList<MutableList<T>>.set(point: Point, value: T) {
+    this[point.y.toInt()][point.x.toInt()] = value
 }
 
 /**
  * Transposes rows and columns.
  * ```
  * [[1, 2], [1, 2]]       -> [[1, 1], [2, 2]]
- * [[1, 2], [1, 2]] -> [[1, 1], [2, 2]]
+ * [[1, 1, 1], [2, 2, 2]] -> [[1, 2], [1, 2], [1, 2]]
  * ```
  */
 fun <T> List<List<T>>.transpose(): List<List<T>> {

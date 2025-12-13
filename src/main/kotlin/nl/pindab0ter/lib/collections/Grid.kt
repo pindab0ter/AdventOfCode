@@ -1,12 +1,12 @@
 package nl.pindab0ter.lib.collections
 
-import nl.pindab0ter.lib.types.Coordinate
+import nl.pindab0ter.lib.types.Point
 
 /**
  * A two-dimensional grid data structure that stores elements in a rectangular array.
  *
  * The grid uses a coordinate system where:
- * - The origin (0, 0) is at the top-left corner
+ * - The origin (0, 0) is in the top-left corner
  * - X coordinates increase to the right (columns)
  * - Y coordinates increase downward (rows)
  *
@@ -23,7 +23,7 @@ import nl.pindab0ter.lib.types.Coordinate
  *
  * grid.width   // 3
  * grid.height  // 3
- * grid[Coordinate(1, 1)]  // 5 (center element)
+ * grid[Point(1, 1)]  // 5 (center element)
  * grid.neighbours(1, 1)   // [1, 2, 3, 4, 6, 7, 8, 9] (all 8 neighbors)
  * ```
  *
@@ -81,8 +81,6 @@ class Grid<T>(val rows: List<List<T>>) : Iterable<T> {
     fun column(x: Int): List<T> = columns[x]
 
     /**
-     * Returns all neighboring cells of the cell at position ([x], [y]).
-     *
      * Neighbors include all 8 adjacent cells (orthogonal and diagonal). Cells on the edges or corners
      * will have fewer neighbors. The cell itself is not included in the result.
      *
@@ -93,8 +91,6 @@ class Grid<T>(val rows: List<List<T>>) : Iterable<T> {
      * 7 8 9
      * ```
      *
-     * @param x The x-coordinate of the cell.
-     * @param y The y-coordinate of the cell.
      * @return A list of neighboring elements, excluding cells outside grid bounds.
      */
     fun neighbours(x: Int, y: Int): List<T> {
@@ -109,40 +105,30 @@ class Grid<T>(val rows: List<List<T>>) : Iterable<T> {
     }
 
     /**
-     * Returns all neighboring cells of the cell at the given [coordinate].
+     * Returns all neighboring cells of the cell at the given [point].
      *
-     * @param coordinate The coordinate of the cell.
      * @return A list of neighboring elements.
-     *
-     * @see neighbours
      */
-    fun neighbours(coordinate: Coordinate): List<T> = neighbours(coordinate.x.toInt(), coordinate.y.toInt())
+    fun neighbours(point: Point): List<T> = neighbours(point.x.toInt(), point.y.toInt())
 
     /**
-     * Finds the coordinate of the first occurrence of the given [element] in the grid.
-     *
-     * The grid is searched row by row, from top to bottom and left to right within each row.
-     *
-     * @param element The element to search for.
-     * @return The coordinate of the first occurrence of [element].
+     * @return The [Point] of the first occurrence of [element].
      * @throws NoSuchElementException if the element is not found in the grid.
-     *
-     * @see Coordinate
      */
-    fun coordinateOf(element: T): Coordinate = rows
+    fun pointOf(element: T): Point = rows
         .asSequence()
         .withIndex()
         .firstNotNullOf { (y, row) ->
             row
                 .indexOf(element)
                 .takeIf { it >= 0 }
-                ?.let { x -> Coordinate(x, y) }
+                ?.let { x -> Point(x, y) }
         }
 
     /**
-     * Returns a new grid containing the results of applying the given [transform] function to each element and its coordinate.
+     * Returns a new grid containing the results of applying the given [transform] function to each element and its [Point].
      *
-     * The [transform] function is called with the coordinate of each element and the element itself. Elements are processed
+     * The [transform] function is called with the [Point] of each element and the element itself. Elements are processed
      * column by column, from left to right, and within each column from top to bottom.
      *
      * Example:
@@ -152,55 +138,40 @@ class Grid<T>(val rows: List<List<T>>) : Iterable<T> {
      *     listOf(3, 4)
      * ).toGrid()
      *
-     * val result = grid.mapIndexed { coordinate, value ->
-     *     "${coordinate.x},${coordinate.y}:$value"
+     * val result = grid.mapIndexed { point, value ->
+     *     "${point.x},${point.y}:$value"
      * }
      * // Result grid:
      * // "0,0:1" "0,1:2"
      * // "1,0:3" "1,1:4"
      * ```
      *
-     * @param transform A function that takes a coordinate and the element at that position and returns the transformed value.
+     * @param transform A function that takes a [Point] and the element at that point and returns the transformed value.
      * @return A new grid with the results of applying [transform] to each element.
-     *
-     * @see Grid.map
-     * @see Iterable.mapIndexed
      */
     fun <R> mapIndexed(
-        transform: (coordinate: Coordinate, value: T) -> R,
+        transform: (point: Point, value: T) -> R,
     ): Grid<R> {
         val destination = MutableList(height) { mutableListOf<R>() }
         for (x in 0 until width) {
             for (y in 0 until height) {
-                val coordinate = Coordinate(x, y)
-                destination[y].add(transform(coordinate, rows[coordinate]))
+                val point = Point(x, y)
+                destination[y].add(transform(point, rows[point]))
             }
         }
         return destination.toGrid()
     }
 
     /**
-     * Returns the element at the given [coordinate].
-     *
-     * @param coordinate The coordinate of the element to retrieve.
-     * @return The element at the specified coordinate.
-     * @throws IndexOutOfBoundsException if the coordinate is out of bounds.
-     *
-     * @see getOrNull
-     * @see Coordinate
+     * @return The element at the specified [point].
+     * @throws IndexOutOfBoundsException if the [point] is out of bounds.
      */
-    operator fun get(coordinate: Coordinate): T = rows[coordinate.x.toInt(), coordinate.y.toInt()]
+    operator fun get(point: Point): T = rows[point.x.toInt(), point.y.toInt()]
 
     /**
-     * Returns the element at the given [coordinate], or `null` if the coordinate is out of bounds.
-     *
-     * @param coordinate The coordinate of the element to retrieve.
-     * @return The element at the specified coordinate, or `null` if out of bounds.
-     *
-     * @see get
-     * @see Coordinate
+     * @return The element at the specified [point], or `null` if out of bounds.
      */
-    fun getOrNull(coordinate: Coordinate): T? = rows.getOrNull(coordinate.x.toInt(), coordinate.y.toInt())
+    fun getOrNull(point: Point): T? = rows.getOrNull(point.x.toInt(), point.y.toInt())
 
     /**
      * Returns a string representation of the grid with rows separated by newlines and elements separated by spaces.
@@ -219,7 +190,7 @@ class Grid<T>(val rows: List<List<T>>) : Iterable<T> {
      *
      * @return A string representation of the grid.
      */
-    override fun toString(): String = this@Grid.rows.joinToString("\n") { row -> row.joinToString(" ") }
+    override fun toString(): String = rows.joinToString("\n") { row -> row.joinToString(" ") }
 
     /**
      * Returns an iterator over all elements in the grid.
@@ -228,7 +199,7 @@ class Grid<T>(val rows: List<List<T>>) : Iterable<T> {
      *
      * @return An iterator over all elements in the grid.
      */
-    override fun iterator(): Iterator<T> = this@Grid.rows.flatten().iterator()
+    override fun iterator(): Iterator<T> = rows.flatten().iterator()
 }
 
 /**

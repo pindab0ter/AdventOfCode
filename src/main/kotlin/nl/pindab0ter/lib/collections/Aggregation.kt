@@ -14,9 +14,6 @@ fun List<Int>.joinToULong(): ULong = foldIndexed(0uL) { index, acc, x ->
 }
 
 /**
- * Returns the product of the result of [selector] for each element in the iterable.
- *
- * @param selector The function to apply to each element.
  * @return The product of the result of [selector] for each element in the iterable.
  */
 fun <T> Iterable<T>.productOf(selector: (T) -> Int): Int = fold(1) { acc, element -> acc * selector(element) }

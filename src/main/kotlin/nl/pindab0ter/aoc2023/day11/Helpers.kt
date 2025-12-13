@@ -1,31 +1,31 @@
 package nl.pindab0ter.aoc2023.day11
 
-import nl.pindab0ter.lib.types.Coordinate
+import nl.pindab0ter.lib.types.Point
 import nl.pindab0ter.lib.collections.combinations
 import nl.pindab0ter.lib.collections.tail
 import kotlin.math.max
 
 /**
- * @return The sum of the distances between all [Coordinate]s in the expanded galaxy.
+ * @return The sum of the distances between all [Point]s in the expanded galaxy.
  */
-fun Set<Coordinate>.sumOfDistancesBetweenGalaxies(expansionMultiplier: Long = 1L): Long =
+fun Set<Point>.sumOfDistancesBetweenGalaxies(expansionMultiplier: Long = 1L): Long =
     expand(expansionMultiplier).distancesBetween().sum()
 
 /**
- * @return The distances between all [Coordinate]s in the set.
+ * @return The distances between all [Point]s in the set.
  */
-fun Set<Coordinate>.distancesBetween() = combinations().map { (a, b) -> a.manhattanDistance(to = b) }
+fun Set<Point>.distancesBetween() = combinations().map { (a, b) -> a.manhattanDistanceTo(other = b) }
 
 /**
- * Expands empty space in the set of [Coordinate]s by increasing the x and y coordinates of the galaxies in the [Set].
+ * Expands empty space in the set of [Point]s by increasing the x and y coordinates of the galaxies in the [Set].
  *
- * @return The [Set] of [Coordinate]s with their x and y coordinates increased by the amount of extra empty space.
+ * @return The [Set] of [Point]s with their x and y coordinates increased by the amount of extra empty space.
  */
-fun Set<Coordinate>.expand(multiplier: Long = 1): Set<Coordinate> {
+fun Set<Point>.expand(multiplier: Long = 1): Set<Point> {
     // Find the empty rows and columns, saving them as ranges of contiguous rows and columns
-    val emptyRows: Set<LongRange> = (minOf(Coordinate::x)..(maxOf(Coordinate::x)))
+    val emptyRows: Set<LongRange> = (minOf(Point::x)..(maxOf(Point::x)))
         .filter { y -> none { it.y == y } }.toSet().contiguousToRanges()
-    val emptyCols: Set<LongRange> = (minOf(Coordinate::y)..(maxOf(Coordinate::y)))
+    val emptyCols: Set<LongRange> = (minOf(Point::y)..(maxOf(Point::y)))
         .filter { x -> none { it.x == x } }.toSet().contiguousToRanges()
 
     // Add the empty space to the coordinates, multiplying the amount of empty space by the multiplier

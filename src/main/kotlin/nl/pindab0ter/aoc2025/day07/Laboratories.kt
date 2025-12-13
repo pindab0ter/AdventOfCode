@@ -1,7 +1,7 @@
 package nl.pindab0ter.aoc2025.day07
 
 import nl.pindab0ter.aoc.getInput
-import nl.pindab0ter.lib.types.Coordinate
+import nl.pindab0ter.lib.types.Point
 import nl.pindab0ter.lib.collections.Grid
 import nl.pindab0ter.lib.println
 import nl.pindab0ter.lib.collections.toGrid
@@ -50,9 +50,9 @@ fun List<String>.simulateTachyonBeamSplitting(): TachyonBeamSplittingResult =
 
 fun Grid<Char>.countPossibleTrajectories(): ULong {
     val terminatingValues = setOf('^', null)
-    val countCache = mutableMapOf<Coordinate, ULong>()
+    val countCache = mutableMapOf<Point, ULong>()
 
-    fun countFrom(position: Coordinate): ULong {
+    fun countFrom(position: Point): ULong {
         countCache[position]?.let { return it }
 
         var current = position
@@ -68,7 +68,7 @@ fun Grid<Char>.countPossibleTrajectories(): ULong {
         }
     }
 
-    return countFrom(coordinateOf('S'))
+    return countFrom(pointOf('S'))
 }
 
 data class SequenceData(val index: Int, val count: Int, val line: String)

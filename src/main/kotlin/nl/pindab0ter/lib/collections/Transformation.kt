@@ -5,6 +5,7 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.runBlocking
 
+/** @return A collection of lists of characters grouped by their value. */
 fun CharSequence.grouped(): Collection<List<Char>> = groupBy { it }.values
 
 /** Transforms elements asynchronously, suspending until all transformations complete. */

@@ -1,12 +1,12 @@
 package nl.pindab0ter.aoc2018.day06
 
 import nl.pindab0ter.aoc.getInput
+import nl.pindab0ter.lib.types.Point
 import java.util.*
-import kotlin.math.abs
 
 fun main() = getInput(2018, 6)
     .lines()
-    .map { it.split(", ").map(String::toInt) }
+    .map { it.split(", ").map(String::toLong) }
     .map { (x, y) -> Point(x, y) }
     .let(::PointGrid)
     .let { grid ->
@@ -24,32 +24,29 @@ fun main() = getInput(2018, 6)
         )
     }
 
-data class Point(val x: Int, val y: Int) {
-    fun distanceTo(x: Int, y: Int) = abs(this.x - x) + abs(this.y - y)
-}
-
 data class PointGrid(val points: List<Point>) {
-    private val x: Int = points.minBy { it.x }.x
-    private val y: Int = points.minBy { it.y }.y
-    private val width: Int = points.maxBy { it.x }.x
-    private val height: Int = points.maxBy { it.y }.y
+    private val x: Long = points.minBy { it.x }.x
+    private val y: Long = points.minBy { it.y }.y
+    private val width: Long = points.maxBy { it.x }.x
+    private val height: Long = points.maxBy { it.y }.y
 
     fun largestArea(): Int = flatMapOverGrid { x, y ->
-        points.map { point -> point.distanceTo(x, y) to point }              // Calculate the distance for each Point
+        points.map { point -> point.manhattanDistanceTo(x, y) to point }     // Calculate the distance for each Point
             .groupBy({ (distance, _) -> distance }, { (_, point) -> point }) // Group by distance
             .toSortedMap().first()                                           // Take the closest
             .let { if (it?.size == 1) it.first() else null }                 // Take it unless there's more than one
     }
         .filterNotNull()
-        .filterNot { it.x in listOf(x, width) || it.y in listOf(y, height) }     // Remove any Points on an edge
-        .groupingBy { it }                                                       // Group by Point
-        .eachCount().values.max()                                              // Get the group with the highest count
+        .filterNot { it.x in listOf(x, width) || it.y in listOf(y, height) } // Remove any Points on an edge
+        .groupingBy { it }                                                   // Group by Point
+        .eachCount().values.max()                                            // Get the group with the highest count
 
-    fun sizeOfSafestPointWithin(maxDistance: Int): Int = flatMapOverGrid { x, y ->
-        points.sumOf { it.distanceTo(x, y) }                             // Sum of the distance to each Point
-    }.count { it < maxDistance }                                             // Count how many are within max distance
+    fun sizeOfSafestPointWithin(maxDistance: Long): Int =
+        flatMapOverGrid { x, y ->
+            points.sumOf { it.manhattanDistanceTo(x, y) }                    // Sum of the distance to each Point
+        }.count { it < maxDistance }                                         // Count how many are within max distance
 
-    private fun <T> flatMapOverGrid(transform: (Int, Int) -> T): List<T> = (x until width).flatMap { x ->
+    private fun <T> flatMapOverGrid(transform: (Long, Long) -> T): List<T> = (x until width).flatMap { x ->
         (y until height).map { y ->
             transform(x, y)
         }

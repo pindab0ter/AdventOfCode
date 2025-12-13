@@ -19,10 +19,10 @@ fun String.parse(): Grid<Char> = lines().map(String::toList).toGrid()
 
 fun Iterable<Char>.countRolls() = count { it == '@' }
 
-fun Grid<Char>.accessibleRollsMarked(): Grid<Char> = mapIndexed { coordinate, value ->
+fun Grid<Char>.accessibleRollsMarked(): Grid<Char> = mapIndexed { point, value ->
     when (value) {
         'x' -> '.'
-        '@' if neighbours(coordinate).countRolls() < 4 -> 'x'
+        '@' if neighbours(point).countRolls() < 4 -> 'x'
         else -> value
     }
 }

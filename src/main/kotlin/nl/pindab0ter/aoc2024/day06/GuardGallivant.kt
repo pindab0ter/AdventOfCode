@@ -9,12 +9,12 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import nl.pindab0ter.aoc.getInput
 import nl.pindab0ter.aoc2024.day06.Tile.*
-import nl.pindab0ter.lib.collections.coordinateOfAny
 import nl.pindab0ter.lib.collections.get
 import nl.pindab0ter.lib.collections.set
 import nl.pindab0ter.lib.collections.getOrNull
+import nl.pindab0ter.lib.collections.pointOfFirst
 import nl.pindab0ter.lib.types.Direction.*
-import nl.pindab0ter.lib.types.Coordinate
+import nl.pindab0ter.lib.types.Point
 import nl.pindab0ter.lib.types.Direction
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.milliseconds
@@ -43,7 +43,7 @@ fun main() = runBlocking {
     terminal.println("Number of tiles the guard has visited: ${lab.visitedTiles()}")
 }
 
-enum class Tile(val recognizedBy: List<Char>) {
+enum class Tile(val representation: List<Char>) {
     FREE(listOf('.')),
     OBSTRUCTION(listOf('#')),
     GUARD(Direction.entries.map {
@@ -57,17 +57,17 @@ enum class Tile(val recognizedBy: List<Char>) {
     VISITED(listOf());
 
     companion object {
-        fun from(char: Char): Tile? = entries.find { it.recognizedBy.contains(char) }
+        fun from(char: Char): Tile? = entries.find { it.representation.contains(char) }
     }
 }
 
 typealias Map = MutableList<MutableList<Tile>>
 
 data class Guard(
-    var coordinate: Coordinate,
+    var point: Point,
     var direction: Direction,
 ) {
-    fun coordinateInFront(): Coordinate = coordinate.translate(direction)
+    fun pointInFront(): Point = point.translate(direction)
 }
 
 data class Lab(
@@ -77,19 +77,19 @@ data class Lab(
     val width = map.first().size
     val height = map.size
 
-    fun guardIsInside(): Boolean = guard.coordinate.x in 0 until width && guard.coordinate.y in 0 until height
+    fun guardIsInside(): Boolean = guard.point.x in 0 until width && guard.point.y in 0 until height
     fun visitedTiles(): Int = map.flatten().count { it == VISITED }
 
     suspend fun gallivant(delayBetweenEachStep: Duration = 0.milliseconds) {
         while (guardIsInside()) {
-            val tileWhereGuardWas = guard.coordinate
+            val tileWhereGuardWas = guard.point
 
-            while (map.getOrNull(guard.coordinateInFront()) == OBSTRUCTION) {
+            while (map.getOrNull(guard.pointInFront()) == OBSTRUCTION) {
                 guard.direction = guard.direction.ninetyDegreesClockwise()
             }
 
-            guard.coordinate = guard.coordinateInFront()
-            if (guardIsInside()) map[guard.coordinate] = GUARD
+            guard.point = guard.pointInFront()
+            if (guardIsInside()) map[guard.point] = GUARD
             map[tileWhereGuardWas] = VISITED
 
             delay(delayBetweenEachStep)
@@ -119,10 +119,10 @@ data class Lab(
         fun fromString(input: String): Lab {
             val charGrid = input.lines().map { it.toCharArray().toList() }
             val map = charGrid.map { row -> row.map { point -> Tile.from(point)!! }.toMutableList() }.toMutableList()
-            val guardCoordinate = charGrid.coordinateOfAny(GUARD.recognizedBy)!!
+            val guardPoint = charGrid.pointOfFirst { it in GUARD.representation }!!
             val guard = Guard(
-                coordinate = guardCoordinate,
-                direction = when (val char = charGrid[guardCoordinate]) {
+                point = guardPoint,
+                direction = when (val char = charGrid[guardPoint]) {
                     '^' -> NORTH
                     '>' -> EAST
                     'v' -> SOUTH

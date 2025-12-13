@@ -17,7 +17,7 @@ val ULong.digits: Int
         return digits
     }
 
-/** Greatest common divisor. */
+/** Greatest common divisor, see [Euclidean algorithm](https://en.wikipedia.org/wiki/Euclidean_algorithm). */
 tailrec fun gcd(a: Long, b: Long): Long = if (b == 0L) abs(a) else gcd(b, a % b)
 
 fun Int.isOdd(): Boolean = this % 2 != 0

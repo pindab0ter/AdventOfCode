@@ -1,5 +1,6 @@
 package nl.pindab0ter.aoc2018.day06
 
+import nl.pindab0ter.lib.types.Point
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
