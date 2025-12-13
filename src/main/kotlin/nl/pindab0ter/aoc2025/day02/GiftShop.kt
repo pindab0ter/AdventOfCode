@@ -2,6 +2,7 @@ package nl.pindab0ter.aoc2025.day02
 
 import nl.pindab0ter.aoc.getInput
 import nl.pindab0ter.lib.*
+import nl.pindab0ter.lib.collections.allElementsEqual
 
 fun main() {
     val ranges = getInput(2025, 2).parse()

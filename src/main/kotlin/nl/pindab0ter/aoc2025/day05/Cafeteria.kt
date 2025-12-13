@@ -2,7 +2,7 @@ package nl.pindab0ter.aoc2025.day05
 
 import nl.pindab0ter.aoc.getInput
 import nl.pindab0ter.lib.println
-import nl.pindab0ter.lib.replaceLast
+import nl.pindab0ter.lib.collections.replaceLast
 import kotlin.math.max
 
 fun main() {

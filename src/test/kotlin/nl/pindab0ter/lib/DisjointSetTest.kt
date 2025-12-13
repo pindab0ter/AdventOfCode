@@ -1,5 +1,6 @@
 package nl.pindab0ter.lib
 
+import nl.pindab0ter.lib.collections.DisjointSet
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test

@@ -2,7 +2,7 @@ package nl.pindab0ter.aoc2023.day12
 
 import nl.pindab0ter.aoc.getInput
 import nl.pindab0ter.aoc2023.day12.Spring.*
-import nl.pindab0ter.lib.mapAsync
+import nl.pindab0ter.lib.collections.mapAsync
 import nl.pindab0ter.lib.println
 import nl.pindab0ter.lib.timing
 

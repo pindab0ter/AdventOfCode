@@ -1,9 +1,9 @@
 package nl.pindab0ter.aoc2024.day04
 
 import nl.pindab0ter.aoc.getInput
-import nl.pindab0ter.lib.rotate45Degrees
-import nl.pindab0ter.lib.rotate45DegreesAntiClockwise
-import nl.pindab0ter.lib.transpose
+import nl.pindab0ter.lib.collections.rotate45Degrees
+import nl.pindab0ter.lib.collections.rotate45DegreesAntiClockwise
+import nl.pindab0ter.lib.collections.transpose
 
 fun main() {
     val input = getInput(2024, 4).lines().map(String::toList)

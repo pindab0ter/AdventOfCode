@@ -1,8 +1,8 @@
 package nl.pindab0ter.aoc2023.day11
 
-import nl.pindab0ter.lib.Coordinate
-import nl.pindab0ter.lib.combinations
-import nl.pindab0ter.lib.tail
+import nl.pindab0ter.lib.types.Coordinate
+import nl.pindab0ter.lib.collections.combinations
+import nl.pindab0ter.lib.collections.tail
 import kotlin.math.max
 
 /**

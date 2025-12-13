@@ -1,9 +1,9 @@
 package nl.pindab0ter.aoc2025.day08
 
 import nl.pindab0ter.aoc.getInput
-import nl.pindab0ter.lib.DisjointSet
+import nl.pindab0ter.lib.collections.DisjointSet
 import nl.pindab0ter.lib.println
-import nl.pindab0ter.lib.productOf
+import nl.pindab0ter.lib.collections.productOf
 import nl.pindab0ter.lib.sqrt
 import java.util.*
 

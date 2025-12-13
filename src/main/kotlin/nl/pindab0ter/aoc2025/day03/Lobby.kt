@@ -1,9 +1,9 @@
 package nl.pindab0ter.aoc2025.day03
 
 import nl.pindab0ter.aoc.getInput
-import nl.pindab0ter.lib.joinToULong
+import nl.pindab0ter.lib.collections.joinToULong
 import nl.pindab0ter.lib.println
-import nl.pindab0ter.lib.without
+import nl.pindab0ter.lib.collections.without
 
 typealias Joltage = ULong
 typealias JoltageRating = Int

@@ -1,10 +1,10 @@
 package nl.pindab0ter.aoc2025.day07
 
 import nl.pindab0ter.aoc.getInput
-import nl.pindab0ter.lib.Coordinate
-import nl.pindab0ter.lib.Grid
+import nl.pindab0ter.lib.types.Coordinate
+import nl.pindab0ter.lib.collections.Grid
 import nl.pindab0ter.lib.println
-import nl.pindab0ter.lib.toGrid
+import nl.pindab0ter.lib.collections.toGrid
 
 
 fun main() {

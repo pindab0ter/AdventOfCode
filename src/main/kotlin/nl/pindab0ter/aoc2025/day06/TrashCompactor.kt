@@ -1,10 +1,10 @@
 package nl.pindab0ter.aoc2025.day06
 
 import nl.pindab0ter.aoc.getInput
-import nl.pindab0ter.lib.init
-import nl.pindab0ter.lib.joinToULong
-import nl.pindab0ter.lib.second
-import nl.pindab0ter.lib.transpose
+import nl.pindab0ter.lib.collections.init
+import nl.pindab0ter.lib.collections.joinToULong
+import nl.pindab0ter.lib.collections.second
+import nl.pindab0ter.lib.collections.transpose
 
 fun main() {
     val input = getInput(2025, 6)

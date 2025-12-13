@@ -1,11 +1,11 @@
 package nl.pindab0ter.aoc2019.day03
 
 import nl.pindab0ter.aoc.getInput
-import nl.pindab0ter.lib.Coordinate
-import nl.pindab0ter.lib.Direction
-import nl.pindab0ter.lib.Direction.*
+import nl.pindab0ter.lib.types.Coordinate
+import nl.pindab0ter.lib.types.Direction
+import nl.pindab0ter.lib.types.Direction.*
 import nl.pindab0ter.lib.println
-import nl.pindab0ter.lib.second
+import nl.pindab0ter.lib.collections.second
 
 fun main() {
     val instructions = getInput(2019, 3).parse()

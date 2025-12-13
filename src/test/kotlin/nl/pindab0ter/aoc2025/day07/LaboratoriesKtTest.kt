@@ -1,6 +1,6 @@
 package nl.pindab0ter.aoc2025.day07
 
-import nl.pindab0ter.lib.toGrid
+import nl.pindab0ter.lib.collections.toGrid
 import org.junit.jupiter.api.DisplayName
 import kotlin.test.Test
 import kotlin.test.assertEquals

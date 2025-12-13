@@ -1,10 +1,9 @@
 package nl.pindab0ter.aoc2025.day04
 
 import nl.pindab0ter.aoc.getInput
-import nl.pindab0ter.lib.Grid
-import nl.pindab0ter.lib.mapIndexed
+import nl.pindab0ter.lib.collections.Grid
 import nl.pindab0ter.lib.println
-import nl.pindab0ter.lib.toGrid
+import nl.pindab0ter.lib.collections.toGrid
 
 fun main() {
     val grid = getInput(2025, 4).parse()

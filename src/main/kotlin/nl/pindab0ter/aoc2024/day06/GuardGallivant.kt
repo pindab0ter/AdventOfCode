@@ -9,8 +9,13 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import nl.pindab0ter.aoc.getInput
 import nl.pindab0ter.aoc2024.day06.Tile.*
-import nl.pindab0ter.lib.*
-import nl.pindab0ter.lib.Direction.*
+import nl.pindab0ter.lib.collections.coordinateOfAny
+import nl.pindab0ter.lib.collections.get
+import nl.pindab0ter.lib.collections.set
+import nl.pindab0ter.lib.collections.getOrNull
+import nl.pindab0ter.lib.types.Direction.*
+import nl.pindab0ter.lib.types.Coordinate
+import nl.pindab0ter.lib.types.Direction
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.milliseconds
 

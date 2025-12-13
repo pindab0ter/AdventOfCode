@@ -1,5 +1,6 @@
-package nl.pindab0ter.lib
+package nl.pindab0ter.lib.collections
 
+import nl.pindab0ter.lib.types.Coordinate
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.Arguments.arguments

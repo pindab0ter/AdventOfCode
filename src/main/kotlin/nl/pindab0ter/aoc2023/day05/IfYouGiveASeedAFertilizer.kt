@@ -1,7 +1,7 @@
 package nl.pindab0ter.aoc2023.day05
 
 import nl.pindab0ter.aoc.getInput
-import nl.pindab0ter.lib.tail
+import nl.pindab0ter.lib.collections.tail
 import nl.pindab0ter.lib.timing
 
 fun main() {

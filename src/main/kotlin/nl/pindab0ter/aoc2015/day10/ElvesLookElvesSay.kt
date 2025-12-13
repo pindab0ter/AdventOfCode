@@ -1,9 +1,9 @@
 package nl.pindab0ter.aoc2015.day10
 
 import nl.pindab0ter.aoc.getInput
-import nl.pindab0ter.lib.head
-import nl.pindab0ter.lib.iterate
-import nl.pindab0ter.lib.tail
+import nl.pindab0ter.lib.collections.head
+import nl.pindab0ter.lib.collections.iterate
+import nl.pindab0ter.lib.collections.tail
 import nl.pindab0ter.lib.timing
 
 fun lookAndSay(sequence: List<Int>): List<Int> {

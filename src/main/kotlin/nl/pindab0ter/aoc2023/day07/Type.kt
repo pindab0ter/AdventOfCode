@@ -1,6 +1,6 @@
 package nl.pindab0ter.aoc2023.day07
 
-import nl.pindab0ter.lib.grouped
+import nl.pindab0ter.lib.collections.grouped
 import kotlin.enums.enumEntries
 
 enum class Type {

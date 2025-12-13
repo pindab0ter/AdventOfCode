@@ -1,8 +1,8 @@
 package nl.pindab0ter.aoc2024.day01
 
 import nl.pindab0ter.aoc.getInput
-import nl.pindab0ter.lib.second
-import nl.pindab0ter.lib.transpose
+import nl.pindab0ter.lib.collections.second
+import nl.pindab0ter.lib.collections.transpose
 import kotlin.math.abs
 
 fun main() = getInput(2024, 1).parse().let { input ->

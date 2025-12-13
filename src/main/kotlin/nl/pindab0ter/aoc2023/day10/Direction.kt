@@ -1,7 +1,7 @@
 package nl.pindab0ter.aoc2023.day10
 
-import nl.pindab0ter.lib.Coordinate
-import nl.pindab0ter.lib.getOrNull
+import nl.pindab0ter.lib.types.Coordinate
+import nl.pindab0ter.lib.collections.getOrNull
 
 /**
  * Represents a direction in a 2D grid.

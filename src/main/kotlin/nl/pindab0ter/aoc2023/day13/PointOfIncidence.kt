@@ -1,7 +1,7 @@
 package nl.pindab0ter.aoc2023.day13
 
 import nl.pindab0ter.aoc.getInput
-import nl.pindab0ter.lib.Grid
+import nl.pindab0ter.lib.collections.Grid
 
 fun main() {
     val input = getInput(2023, 13)

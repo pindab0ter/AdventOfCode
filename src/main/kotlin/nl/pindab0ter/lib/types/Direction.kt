@@ -1,5 +1,6 @@
-package nl.pindab0ter.lib
+package nl.pindab0ter.lib.types
 
+/** Cardinal directions. */
 enum class Direction {
     NORTH,
     EAST,
