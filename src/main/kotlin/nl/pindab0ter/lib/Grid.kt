@@ -4,15 +4,15 @@ class Grid<T>(val rows: List<List<T>>) : Iterable<T> {
     constructor(vararg columns: List<T>) : this(columns.toList())
 
     val columns: List<List<T>> = rows[0].indices.map { x -> rows.indices.map { y -> rows[x, y] } }
-    val width: Int = this@Grid.rows.size
-    val height: Int = columns.size
+    val width: Int = columns.size
+    val height: Int = rows.size
 
     init {
         require(rows.all { it.size == rows.first().size })
         require(columns.all { it.size == columns.first().size })
     }
 
-    fun row(y: Int): List<T> = this@Grid.rows[y]
+    fun row(y: Int): List<T> = rows[y]
     fun column(x: Int): List<T> = columns[x]
 
     fun neighbours(x: Int, y: Int): List<T> {
@@ -57,11 +57,16 @@ fun String.toGrid(): Grid<Char> = lines().map(String::toList).toGrid()
 inline fun <T, R> Grid<T>.mapIndexed(
     transform: (coordinate: Coordinate, value: T) -> R,
 ): Grid<R> {
-    val destination = MutableList(width) { mutableListOf<R>() }
+    val destination = MutableList(height) { mutableListOf<R>() }
     for (x in 0 until width) {
         for (y in 0 until height) {
             val coordinate = Coordinate(x, y)
-            destination[y].add(transform(coordinate, rows[y][x]))
+            destination[y]
+                .add(transform(
+                    coordinate, rows
+                        .get(y)
+                        .get(x)
+                ))
         }
     }
     return destination.toGrid()
