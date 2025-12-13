@@ -1,6 +1,7 @@
 package nl.pindab0ter.aoc2023.day10
 
-import nl.pindab0ter.aoc2023.day10.Direction.*
+import nl.pindab0ter.lib.types.Direction
+import nl.pindab0ter.lib.types.Direction.*
 
 enum class Section(val directions: Set<Direction>, val representation: String) {
     VERTICAL(setOf(NORTH, SOUTH), "│"),

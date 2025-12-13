@@ -3,10 +3,14 @@ package nl.pindab0ter.aoc2023.day10
 import com.github.ajalt.mordant.rendering.TextColors.*
 import nl.pindab0ter.lib.*
 import nl.pindab0ter.lib.collections.allElementsEqual
+import nl.pindab0ter.lib.collections.contains
 import nl.pindab0ter.lib.collections.coordinateOfFirst
 import nl.pindab0ter.lib.collections.get
 import nl.pindab0ter.lib.collections.getOrNull
 import nl.pindab0ter.lib.types.Coordinate
+import nl.pindab0ter.lib.types.Direction
+import nl.pindab0ter.lib.types.Direction.*
+import kotlin.collections.map
 
 data class Maze(val sections: List<List<Section?>>, val startCoordinates: Coordinate) {
     private val start: Section = sections[startCoordinates]!!
@@ -36,9 +40,9 @@ data class Maze(val sections: List<List<Section?>>, val startCoordinates: Coordi
             loopSections: Set<Coordinate>,
             distance: Int,
         ): Pair<Set<Coordinate>, Int> {
-            val nextSteps = steps.map { (coordinates, origin) ->
-                val direction = directionFor(coordinates, origin)
-                Coordinate(coordinates.x + direction.dx, coordinates.y + direction.dy) to direction
+            val nextSteps = steps.map { (coordinate, origin) ->
+                val direction = directionFor(coordinate, origin)
+                coordinate.translate(direction) to direction
             }
 
             return when {
@@ -68,7 +72,7 @@ data class Maze(val sections: List<List<Section?>>, val startCoordinates: Coordi
     private fun isEnclosedByLoop(x: Int, y: Int): Boolean {
         val isNotPartOfLoop = !loopSections.contains(x, y)
         val isEnclosedByLoop = (0..x).count { rayX ->
-            loopSections.contains(rayX, y) && sections[rayX, y]!!.directions.contains(Direction.NORTH)
+            loopSections.contains(rayX, y) && sections[rayX, y]!!.directions.contains(NORTH)
         }.isOdd()
         return (isNotPartOfLoop && isEnclosedByLoop)
     }
@@ -95,10 +99,7 @@ data class Maze(val sections: List<List<Section?>>, val startCoordinates: Coordi
             return Maze(sections = grid.mapIndexed { y, row ->
                 row.mapIndexed { x, character ->
                     when (character) {
-                        'S' -> {
-                            val directions = Direction.getDirectionsPointingTo(Coordinate(x, y), grid)
-                            Section.from(directions.map(Direction::opposite).toSet())
-                        }
+                        'S' -> Section.from(grid.pointingAwayFrom(Coordinate(x, y)))
 
                         else -> Section.from(character)
                     }
@@ -107,3 +108,13 @@ data class Maze(val sections: List<List<Section?>>, val startCoordinates: Coordi
         }
     }
 }
+
+fun List<List<Char>>.pointingAwayFrom(
+    coordinate: Coordinate,
+): Set<Direction> = setOf(NORTH, EAST, SOUTH, WEST)
+    .mapNotNull { direction ->
+        val character = getOrNull(coordinate.translate(direction))
+        Section.from(character)?.directions?.firstOrNull { it == direction.opposite() }?.opposite()
+    }
+    .toSet()
+

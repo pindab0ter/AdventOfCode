@@ -7,6 +7,13 @@ enum class Direction {
     SOUTH,
     WEST;
 
+    fun opposite(): Direction = when (this) {
+        NORTH -> SOUTH
+        EAST -> WEST
+        SOUTH -> NORTH
+        WEST -> EAST
+    }
+
     fun ninetyDegreesClockwise(): Direction = when (this) {
         NORTH -> EAST
         EAST -> SOUTH

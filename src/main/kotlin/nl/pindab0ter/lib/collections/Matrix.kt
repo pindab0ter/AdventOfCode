@@ -5,24 +5,6 @@ import kotlin.math.max
 import kotlin.math.min
 
 /**
- * Returns `true` if the collection contains a [Coordinate] with the specified [x] and [y] values.
- *
- * @param x The x-coordinate to search for.
- * @param y The y-coordinate to search for.
- * @return `true` if a matching coordinate is found, `false` otherwise.
- */
-fun Iterable<Coordinate>.contains(x: Int, y: Int): Boolean = contains(x.toLong(), y.toLong())
-
-/**
- * Returns `true` if the collection contains a [Coordinate] with the specified [x] and [y] values.
- *
- * @param x The x-coordinate to search for.
- * @param y The y-coordinate to search for.
- * @return `true` if a matching coordinate is found, `false` otherwise.
- */
-fun Iterable<Coordinate>.contains(x: Long, y: Long): Boolean = any { it.x == x && it.y == y }
-
-/**
  * Returns the [Coordinate] of the first element that is contained in the given [collection], or `null` if no such element was found.
  *
  * The search is performed row by row, from top to bottom and left to right within each row.
