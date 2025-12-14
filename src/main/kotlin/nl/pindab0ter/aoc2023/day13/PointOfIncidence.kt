@@ -12,8 +12,8 @@ fun main() {
 }
 
 fun getSummaryOfAllNotes(patterns: List<Grid<Surface>>): Int {
-    return patterns.sumOf { pattern -> locationOfVerticalReflectionLine(pattern.columns) ?: 0 } +
-            patterns.sumOf { pattern -> locationOfVerticalReflectionLine(pattern.rows) ?: 0 } * 100
+    return patterns.sumOf { pattern -> locationOfVerticalReflectionLine(pattern.columns()) ?: 0 } +
+            patterns.sumOf { pattern -> locationOfVerticalReflectionLine(pattern.rows()) ?: 0 } * 100
 }
 
 /**

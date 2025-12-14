@@ -1,10 +1,11 @@
 package nl.pindab0ter.aoc2025.day07
 
 import nl.pindab0ter.aoc.getInput
-import nl.pindab0ter.lib.types.Point
 import nl.pindab0ter.lib.collections.Grid
-import nl.pindab0ter.lib.println
+import nl.pindab0ter.lib.collections.pointOfFirst
 import nl.pindab0ter.lib.collections.toGrid
+import nl.pindab0ter.lib.println
+import nl.pindab0ter.lib.types.Point
 
 
 fun main() {
@@ -52,23 +53,20 @@ fun Grid<Char>.countPossibleTrajectories(): ULong {
     val terminatingValues = setOf('^', null)
     val countCache = mutableMapOf<Point, ULong>()
 
-    fun countFrom(position: Point): ULong {
-        countCache[position]?.let { return it }
+    fun countFrom(point: Point): ULong {
+        countCache[point]?.let { return it }
 
-        var current = position
+        val nextPoint = column(point.x.toInt())
+            .pointOfFirst(fromIndex = point.y.toInt()) { it in terminatingValues }
 
-        while (getOrNull(current) !in terminatingValues) current = current.south()
+        if (nextPoint == null || get(nextPoint) != '^') return 1uL
+            .also { countCache[point] = it }
 
-        return when (getOrNull(current)) {
-            '^' -> (countFrom(current.west()) + countFrom(current.east()))
-                .also { countCache[position] = it }
-
-            else -> 1uL
-                .also { countCache[position] = it }
-        }
+        return (countFrom(nextPoint.toTheWest()) + countFrom(nextPoint.toTheEast()))
+            .also { countCache[point] = it }
     }
 
-    return countFrom(pointOf('S'))
+    return countFrom(pointOf('S').toTheSouth())
 }
 
 data class SequenceData(val index: Int, val count: Int, val line: String)

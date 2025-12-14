@@ -1,243 +1,194 @@
+@file:JvmName("MatrixKt")
+
 package nl.pindab0ter.lib.collections
 
 import nl.pindab0ter.lib.types.Point
 
-/**
- * A two-dimensional grid data structure that stores elements in a rectangular array.
- *
- * The grid uses a coordinate system where:
- * - The origin (0, 0) is in the top-left corner
- * - X coordinates increase to the right (columns)
- * - Y coordinates increase downward (rows)
- *
- * The grid provides efficient access to rows, columns, and neighboring cells, and implements
- * [Iterable] to allow iteration over all elements.
- *
- * Example:
- * ```
- * val grid = listOf(
- *     listOf(1, 2, 3),
- *     listOf(4, 5, 6),
- *     listOf(7, 8, 9)
- * ).toGrid()
- *
- * grid.width   // 3
- * grid.height  // 3
- * grid[Point(1, 1)]  // 5 (center element)
- * grid.neighbours(1, 1)   // [1, 2, 3, 4, 6, 7, 8, 9] (all 8 neighbors)
- * ```
- *
- * @param T The type of elements stored in the grid.
- * @property rows The underlying row-based representation of the grid.
- * @property columns The column-based view of the grid.
- * @property width The number of columns in the grid.
- * @property height The number of rows in the grid.
- */
-class Grid<T>(val rows: List<List<T>>) : Iterable<T> {
-    /**
-     * Creates a grid from vararg columns.
-     *
-     * @param rows The columns to create the grid from.
-     */
+/** A two-dimensional grid data structure. Origin (0, 0) is top-left, x increases right, y increases down. */
+class Grid<T>(val width: Int, val height: Int, private val data: List<T>) : Collection<T> {
+    constructor(rows: List<List<T>>) : this(rows.first().size, rows.size, rows.flatten())
     constructor(vararg rows: List<T>) : this(rows.toList())
 
-    /**
-     * A column-based view of the grid.
-     *
-     * Each element in this list represents one column (vertical slice) of the grid.
-     */
-    val columns: List<List<T>> by lazy { rows[0].indices.map { x -> rows.indices.map { y -> rows[x, y] } }}
-
-    /**
-     * The number of columns (width) in the grid.
-     */
-    val width: Int = rows.first().size
-
-    /**
-     * The number of rows (height) in the grid.
-     */
-    val height: Int = rows.size
+    override val size: Int get() = data.size
 
     init {
-        require(rows.all { it.size == rows.first().size })
+        require(data.size == width * height)
     }
 
-    /**
-     * Returns the row at the specified index.
-     *
-     * @param y The row index (0-based from the top).
-     * @return A list containing all elements in the specified row.
-     * @throws IndexOutOfBoundsException if [y] is out of bounds.
-     */
-    fun row(y: Int): List<T> = rows[y]
+    @Suppress("NOTHING_TO_INLINE")
+    private inline fun index(x: Int, y: Int) = y * width + x
+
+    @Suppress("NOTHING_TO_INLINE")
+    private inline fun pointOf(index: Int) = Point(index % width, index / width)
+
+    fun rows(): List<RowView> = (0 until height).map { RowView(it) }
+    fun columns(): List<ColumnView> = (0 until width).map { ColumnView(it) }
+
+    fun row(index: Int): RowView = RowView(index)
+    fun column(index: Int): ColumnView = ColumnView(index)
+
+    override fun isEmpty(): Boolean = height == 0
+    override fun contains(element: T): Boolean = data.contains(element)
+    override fun containsAll(elements: Collection<T>): Boolean = data.containsAll(elements)
+
+    override fun iterator(): Iterator<T> = data.iterator()
+
+    operator fun get(x: Int, y: Int): T {
+        if (x !in 0..<width || y !in 0..<height) throw IndexOutOfBoundsException()
+        return data[index(x, y)]
+    }
+
+    operator fun get(point: Point): T = this[point.x.toInt(), point.y.toInt()]
+
+    fun getOrNull(x: Int, y: Int): T? =
+        if (x !in 0..<width || y !in 0..<height) null
+        else data.getOrNull(index(x, y))
+
+    fun getOrNull(point: Point): T? = getOrNull(point.x.toInt(), point.y.toInt())
 
     /**
-     * Returns the column at the specified index.
-     *
-     * @param x The column index (0-based from the left).
-     * @return A list containing all elements in the specified column.
-     * @throws IndexOutOfBoundsException if [x] is out of bounds.
-     */
-    fun column(x: Int): List<T> = columns[x]
-
-    /**
-     * Neighbors include all 8 adjacent cells (orthogonal and diagonal). Cells on the edges or corners
-     * will have fewer neighbors. The cell itself is not included in the result.
-     *
-     * Example for a 3x3 grid:
+     * Returns all 8 neighbouring cells (orthogonal and diagonal).
      * ```
      * 1 2 3
-     * 4 5 6    neighbours(1, 1) returns [1, 2, 3, 4, 6, 7, 8, 9]
+     * 4 5 6    neighbours(1, 1) → [1, 2, 3, 4, 6, 7, 8, 9]
      * 7 8 9
      * ```
-     *
-     * @return A list of neighboring elements, excluding cells outside grid bounds.
      */
     fun neighbours(x: Int, y: Int): List<T> {
         val result = mutableListOf<T>()
         for (currentY in y - 1..y + 1) {
             for (currentX in x - 1..x + 1) {
                 if (currentX == x && currentY == y) continue
-                rows.getOrNull(currentX, currentY)?.let { result.add(it) }
+                getOrNull(currentX, currentY)?.let { result.add(it) }
             }
         }
         return result
     }
 
-    /**
-     * Returns all neighboring cells of the cell at the given [point].
-     *
-     * @return A list of neighboring elements.
-     */
     fun neighbours(point: Point): List<T> = neighbours(point.x.toInt(), point.y.toInt())
 
-    /**
-     * @return The [Point] of the first occurrence of [element].
-     * @throws NoSuchElementException if the element is not found in the grid.
-     */
-    fun pointOf(element: T): Point = rows
-        .asSequence()
-        .withIndex()
-        .firstNotNullOf { (y, row) ->
-            row
-                .indexOf(element)
-                .takeIf { it >= 0 }
-                ?.let { x -> Point(x, y) }
-        }
+    /** Returns the point of the first occurrence of the element. */
+    fun pointOf(element: T): Point = pointOf(data.indexOf(element))
 
-    /**
-     * Returns a new grid containing the results of applying the given [transform] function to each element and its [Point].
-     *
-     * The [transform] function is called with the [Point] of each element and the element itself. Elements are processed
-     * column by column, from left to right, and within each column from top to bottom.
-     *
-     * Example:
-     * ```
-     * val grid = listOf(
-     *     listOf(1, 2),
-     *     listOf(3, 4)
-     * ).toGrid()
-     *
-     * val result = grid.mapIndexed { point, value ->
-     *     "${point.x},${point.y}:$value"
-     * }
-     * // Result grid:
-     * // "0,0:1" "0,1:2"
-     * // "1,0:3" "1,1:4"
-     * ```
-     *
-     * @param transform A function that takes a [Point] and the element at that point and returns the transformed value.
-     * @return A new grid with the results of applying [transform] to each element.
-     */
+    /** Transforms each element along with its point. */
     fun <R> mapIndexed(
         transform: (point: Point, value: T) -> R,
-    ): Grid<R> {
-        val destination = MutableList(height) { mutableListOf<R>() }
-        for (x in 0 until width) {
-            for (y in 0 until height) {
-                val point = Point(x, y)
-                destination[y].add(transform(point, rows[point]))
-            }
+    ): Grid<R> = Grid(width, height, data.mapIndexed { index, element ->
+        transform(pointOf(index), element)
+    })
+
+    override fun toString(): String {
+        val longest = maxOf { it.toString().length }
+        var index = 0
+        return joinToString(separator = " ") {
+            val string = it.toString().padStart(longest)
+            if (++index % width == 1 && index > 1) "\n$string" else string
         }
-        return destination.toGrid()
+    }
+
+    /** Base class for row and column views. These are views over the grid data, not copies. */
+    abstract inner class ListView : List<T> {
+        override fun indexOf(element: T): Int = (0 until size).indexOfFirst { get(it) == element }
+        override fun lastIndexOf(element: T): Int = (0 until size).indexOfLast { get(it) == element }
+        override fun subList(fromIndex: Int, toIndex: Int): List<T> = (fromIndex until toIndex).map { get(it) }
+        override fun toString(): String = joinToString(prefix = "[", postfix = "]")
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) return true
+            if (other !is List<*>) return false
+            if (size != other.size) return false
+            return (0 until size).all { get(it) == other[it] }
+        }
+
+        override fun hashCode(): Int {
+            var result = 1
+            for (i in 0 until size) {
+                result = 31 * result + (get(i)?.hashCode() ?: 0)
+            }
+            return result
+        }
     }
 
     /**
-     * @return The element at the specified [point].
-     * @throws IndexOutOfBoundsException if the [point] is out of bounds.
+     * A view of a single row in the grid (not a copy).
      */
-    operator fun get(point: Point): T = rows[point.x.toInt(), point.y.toInt()]
+    inner class RowView(val y: Int) : ListView() {
+        override val size: Int get() = width
 
-    /**
-     * @return The element at the specified [point], or `null` if out of bounds.
-     */
-    fun getOrNull(point: Point): T? = rows.getOrNull(point.x.toInt(), point.y.toInt())
+        override fun get(index: Int): T = data[index(index, y)]
+        override fun isEmpty(): Boolean = width == 0
 
-    /**
-     * Returns a string representation of the grid with rows separated by newlines and elements separated by spaces.
-     *
-     * Example:
-     * ```
-     * val grid = listOf(
-     *     listOf(1, 2),
-     *     listOf(3, 4)
-     * ).toGrid()
-     * println(grid)
-     * // Output:
-     * // 1 2
-     * // 3 4
-     * ```
-     *
-     * @return A string representation of the grid.
-     */
-    override fun toString(): String = rows.joinToString("\n") { row -> row.joinToString(" ") }
+        override fun contains(element: T): Boolean = data
+            .slice(index(0, y) until index(width, y))
+            .contains(element)
 
-    /**
-     * Returns an iterator over all elements in the grid.
-     *
-     * Elements are iterated row by row, from top to bottom and left to right within each row.
-     *
-     * @return An iterator over all elements in the grid.
-     */
-    override fun iterator(): Iterator<T> = rows.flatten().iterator()
+        override fun containsAll(elements: Collection<T>): Boolean = data
+            .slice(index(0, y) until index(width, y))
+            .containsAll(elements)
+
+        override fun iterator(): Iterator<T> = this.RowViewIterator(0)
+        override fun listIterator(): ListIterator<T> = this.RowViewIterator(0)
+        override fun listIterator(index: Int): ListIterator<T> = this.RowViewIterator(index)
+
+        private inner class RowViewIterator(private var x: Int) : ListIterator<T> {
+            override fun hasNext(): Boolean = x < width
+            override fun hasPrevious(): Boolean = x > 0
+            override fun previousIndex(): Int = x - 1
+
+            override fun nextIndex(): Int = x + 1
+
+            override fun next(): T = if (x >= width) throw NoSuchElementException() else get(x++, y)
+            override fun previous(): T = if (x < 0) throw NoSuchElementException() else get(x--, y)
+        }
+    }
+
+    /** A view of a single column in the grid (not a copy). */
+    inner class ColumnView(val x: Int) : ListView() {
+        override val size: Int get() = height
+
+        override fun get(index: Int): T = data[index(x, index)]
+        override fun isEmpty(): Boolean = height == 0
+
+        /** Returns the point of the first element matching the [predicate], starting from the given [index][fromIndex]. */
+        fun pointOfFirst(fromIndex: Int = 0, predicate: (T) -> Boolean): Point? {
+            var index = 0
+            val y = indexOfFirst { element ->
+                val found = if (index < fromIndex) false else predicate(element)
+
+                index++
+                found
+            }
+            if (y == -1) return null
+            return Point(x, y)
+        }
+
+        override fun contains(element: T): Boolean = data
+            .slice(index(x, 0) until index(x, height))
+            .contains(element)
+
+        override fun containsAll(elements: Collection<T>): Boolean = data
+            .slice(index(x, 0) until index(x, height))
+            .containsAll(elements)
+
+        override fun iterator(): Iterator<T> = this.ColumnViewIterator(0)
+        override fun listIterator(): ListIterator<T> = this.ColumnViewIterator(0)
+        override fun listIterator(index: Int): ListIterator<T> = this.ColumnViewIterator(index)
+
+        private inner class ColumnViewIterator(private var y: Int) : ListIterator<T> {
+            override fun hasNext(): Boolean = y < height
+            override fun hasPrevious(): Boolean = y > 0
+            override fun previousIndex(): Int = y - 1
+
+            override fun nextIndex(): Int = y + 1
+
+            override fun next(): T = if (y >= height) throw NoSuchElementException() else get(x, y++)
+            override fun previous(): T = if (y < 0) throw NoSuchElementException() else get(x, y--)
+        }
+    }
 }
 
-/**
- * Converts this list of lists into a [Grid].
- *
- * The outer list represents rows, and each inner list represents a row of elements.
- * All rows must have the same length.
- *
- * Example:
- * ```
- * val grid = listOf(
- *     listOf(1, 2, 3),
- *     listOf(4, 5, 6)
- * ).toGrid()
- * ```
- *
- * @return A grid containing the elements from this list.
- * @throws IllegalArgumentException if rows have different lengths.
- */
+/** Converts this list of lists (rows) into a grid. */
 fun <T> List<List<T>>.toGrid(): Grid<T> = Grid(this)
 
-/**
- * Converts this string into a [Grid] of characters.
- *
- * The string is split by newlines, and each line becomes a row in the grid.
- * Each character in a line becomes an element in that row.
- *
- * Example:
- * ```
- * val grid = """
- *     ABC
- *     DEF
- *     GHI
- * """.trimIndent().toGrid()
- * // Creates a 3x3 grid of characters
- * ```
- *
- * @return A grid of characters.
- * @throws IllegalArgumentException if lines have different lengths.
- */
+/** Converts this string into a grid of characters (split by newlines). */
 fun String.toGrid(): Grid<Char> = lines().map(String::toList).toGrid()

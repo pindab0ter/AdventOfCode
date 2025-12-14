@@ -16,7 +16,7 @@ class PointOfIncidenceKtTest {
     fun `Find vertical reflection lines`(expected: Int?, input: String) {
         val pattern = parse(input)[0]
 
-        assertEquals(expected, locationOfVerticalReflectionLine(pattern.columns))
+        assertEquals(expected, locationOfVerticalReflectionLine(pattern.columns()))
     }
 
     @ParameterizedTest
@@ -24,7 +24,7 @@ class PointOfIncidenceKtTest {
     fun `Find horizontal reflection lines`(expected: Int?, input: String) {
         val pattern = parse(input)[0]
 
-        assertEquals(expected, locationOfVerticalReflectionLine(pattern.rows))
+        assertEquals(expected, locationOfVerticalReflectionLine(pattern.rows()))
     }
 
     @Test

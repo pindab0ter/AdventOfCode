@@ -12,7 +12,7 @@ import org.junit.jupiter.params.provider.MethodSource
 import java.util.stream.Stream
 import kotlin.test.assertEquals
 
-class MatrixKtTest {
+class TwoDimensionalCollectionsKtTest {
     @ParameterizedTest(name = "{1} → {0}")
     @MethodSource("clockwiseRotationListProvider")
     fun `Rotate 2D lists 45º`(expected: List<List<Int>>, input: List<List<Int>>) {
