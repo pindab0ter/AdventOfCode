@@ -1,6 +1,7 @@
 package nl.pindab0ter.lib.types
 
 import nl.pindab0ter.lib.types.Direction.*
+import org.openrndr.math.Vector2
 import kotlin.math.abs
 
 /** Represents a point in 2D space. */
@@ -22,4 +23,12 @@ data class Point(val x: Long, val y: Long) {
     fun toTheEast(distance: Long = 1): Point = Point(x + distance, y)
     fun toTheSouth(distance: Long = 1): Point = Point(x, y + distance)
     fun toTheWest(distance: Long = 1): Point = Point(x - distance, y)
+
+    override fun toString(): String = "($x,$y)"
+    override fun equals(other: Any?): Boolean = other is Point && x == other.x && y == other.y
+    override fun hashCode(): Int {
+        var result = x.hashCode()
+        result = 31 * result + y.hashCode()
+        return result
+    }
 }

@@ -11,6 +11,10 @@ clj-http = "3.13.1"
 jovial = "0.4.2"
 clojurephant = "0.9.1"
 versions-plugin = "0.53.0"
+openrndr = "0.4.5"
+orx = "0.4.5"
+slf4j = "2.0.17"
+kotlin-logging = "7.0.13"
 
 [libraries]
 # Kotlin
@@ -33,6 +37,10 @@ clojure = { module = "org.clojure:clojure", version.ref = "clojure" }
 clojure-tools-namespace = { module = "org.clojure:tools.namespace", version.ref = "clojure-tools-namespace" }
 clj-http = { module = "clj-http:clj-http", version.ref = "clj-http" }
 jovial = { module = "dev.clojurephant:jovial", version.ref = "jovial" }
+
+# Logging (required by OPENRNDR)
+slf4j-simple = { module = "org.slf4j:slf4j-simple", version.ref = "slf4j" }
+kotlin-logging = { module = "io.github.oshai:kotlin-logging", version.ref = "kotlin-logging" }
 
 [plugins]
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }

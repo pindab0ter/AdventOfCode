@@ -1,4 +1,6 @@
 import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
+import org.gradle.internal.os.OperatingSystem
+import org.gradle.nativeplatform.platform.internal.DefaultNativePlatform
 import java.net.URI
 
 plugins {
@@ -34,6 +36,10 @@ dependencies {
     // Terminal UI
     implementation(libs.mordant)
     implementation(libs.mordant.coroutines)
+
+    // Logging
+    implementation(libs.kotlin.logging)
+    runtimeOnly(libs.slf4j.simple)
 
     // Testing
     testImplementation(platform(libs.junit.bom))
@@ -81,5 +87,43 @@ tasks.named<DependencyUpdatesTask>("dependencyUpdates") {
 }
 
 kotlin {
-    jvmToolchain(23)
+    jvmToolchain(17)
 }
+
+// OPENRNDR configuration
+class Openrndr {
+    val openrndrVersion = "0.4.5"
+    val orxVersion = "0.4.5"
+
+    val currentArchitecture: String = DefaultNativePlatform("current").architecture.name
+    val currentOs: OperatingSystem = OperatingSystem.current()
+    val os = when {
+        currentOs.isWindows -> "windows"
+        currentOs.isMacOsX -> when (currentArchitecture) {
+            "aarch64", "arm-v8" -> "macos-arm64"
+            else -> "macos"
+        }
+        currentOs.isLinux -> when (currentArchitecture) {
+            "x86-64" -> "linux-x64"
+            "aarch64" -> "linux-arm64"
+            else -> throw IllegalArgumentException("architecture not supported: $currentArchitecture")
+        }
+        else -> throw IllegalArgumentException("os not supported: ${currentOs.name}")
+    }
+
+    fun orx(module: String) = "org.openrndr.extra:$module:$orxVersion"
+    fun openrndr(module: String) = "org.openrndr:openrndr-$module:$openrndrVersion"
+    fun openrndrNatives(module: String) = "org.openrndr:openrndr-$module-natives-$os:$openrndrVersion"
+
+    init {
+        dependencies {
+            runtimeOnly(openrndr("gl3"))
+            runtimeOnly(openrndrNatives("gl3"))
+            runtimeOnly(openrndrNatives("ffmpeg"))
+            implementation(openrndr("application"))
+            implementation(openrndr("ffmpeg"))
+        }
+    }
+}
+
+val openrndr = Openrndr()

@@ -20,4 +20,19 @@ enum class Direction {
         SOUTH -> WEST
         WEST -> NORTH
     }
+
+    fun ninetyDegreesCounterClockwise(): Direction = when (this) {
+        NORTH -> WEST
+        WEST -> SOUTH
+        SOUTH -> EAST
+        EAST -> NORTH
+    }
+
+    override fun toString(): String =when (this)
+    {
+        NORTH -> "↑"
+        EAST -> "→"
+        SOUTH -> "↓"
+        WEST -> "←"
+    }
 }
